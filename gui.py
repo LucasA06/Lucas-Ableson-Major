@@ -1,6 +1,7 @@
 from tkinter import *
 import customtkinter
 import tkinter as tk
+import csv
 
 customtkinter.set_appearance_mode('dark')
 customtkinter.set_default_color_theme('blue')
@@ -32,10 +33,7 @@ def open_teams():
 
 def open_stats():
     app.withdraw()
-    tl4 = customtkinter.CTk()
-    tl4.geometry("500x600")
-    tl4.title("Statistics")
-    tl4.mainloop()
+    create_stats()
 
 def open_favs():
     app.withdraw()
@@ -137,6 +135,33 @@ team_frame.place(relx=0.625,rely=0.625)
 team_text = customtkinter.CTkLabel(master=app,text='Team Card',font=('Gill Sans MT', 22))
 team_text.place(relx=0.71,rely=0.57)
 
+def create_stats():
+    tl4 = tk.Tk()
+    tl4.geometry("500x600")
+    tl4.title("Statistics")
+    tl4.resizable(False, False)
+
+    with open(r'C:\Users\lucas\OneDrive\Documents\GitHub\Lucas-Ableson-Major/.csv files/17/Players/PL Player Goals.csv', encoding='utf-8') as file:
+        reader = csv.reader(file)
+        data = list(reader)
+
+    for row in data:
+        if len(row) >= 3:
+            parts = row[0].split('|')
+            if len(parts) >= 3:
+                name = parts[0].split(',')[2].strip()
+                goal_tally = parts[1].strip()
+                position = parts[2].strip()
+
+                label = tk.Label(tl4, text=f"Name: {name}, Position: {position}, Goals: {goal_tally}")
+                label.place(relx=0.5, rely=0.1, anchor='center')
+                label.pack()
+
+    menu_button = tk.Button(master=tl4, text='Menu', height=50, width=200, command=lambda: main_menu(tl4), font=('Gill Sans MT', 15))
+    menu_button.place(relx=0.5, rely=0.9, anchor='center')
+
+    tl4.mainloop()
+
 
 def create_about():
     tl8 = customtkinter.CTk()
@@ -157,24 +182,53 @@ def create_about():
     menu_button.place(relx=0.5,rely=0.9,anchor='center')
     tl8.mainloop()
 
+current_theme = 'Dark'
+
 def create_settings():
+    global current_theme
+
     tl9 = customtkinter.CTk()
     tl9.geometry("500x600")
     tl9.title("Settings")
-    tl9.resizable(False,False)
+    tl9.resizable(False, False)
 
-    label = customtkinter.CTkLabel(master=tl9,text='Settings',font=('Gill Sans MT', 30))
-    label.place(relx=0.5,rely=0.05,anchor='center')
-    label2 = customtkinter.CTkLabel(master=tl9,text='Appearance',font=('Gill Sans MT', 15))
-    label2.place(relx=0.5,rely=0.2,anchor='center')
-    
-    values=['Dark','Light','System']
-    appearance_menu = customtkinter.CTkOptionMenu(master=tl9, values=values, font=('Gill Sans MT', 15), command=lambda mode: appearance_change(mode))
-    appearance_menu.place(relx=0.5,rely=0.3,anchor='center')
+    def change_window_size(value):
+        width, height = value, app.winfo_height()
+        app.geometry(f"{width}x{height}")
+        initial_size_label.configure(text=f"Window Size: {width}x{height}")
+
+    size_label = customtkinter.CTkLabel(master=tl9, text='Window Size', font=('Gill Sans MT', 15))
+    size_label.place(relx=0.5, rely=0.4, anchor='center')
+
+    size_slider = customtkinter.CTkSlider(master=tl9, from_=300, to=800, orientation='horizontal', width=400, command=change_window_size, number_of_steps=5)
+    size_slider.set(app.winfo_width())
+    size_slider.place(relx=0.5, rely=0.5, anchor='center')
+
+    initial_width, initial_height = app.winfo_width(), app.winfo_height()
+    initial_size_label = customtkinter.CTkLabel(master=tl9, text=f"Window Size: {initial_width}x{initial_height}", font=('Gill Sans MT', 15))
+    initial_size_label.place(relx=0.5, rely=0.6, anchor='center')
+
+    label = customtkinter.CTkLabel(master=tl9, text='Settings', font=('Gill Sans MT', 30))
+    label.place(relx=0.5, rely=0.05, anchor='center')
+    label2 = customtkinter.CTkLabel(master=tl9, text='Appearance', font=('Gill Sans MT', 15))
+    label2.place(relx=0.5, rely=0.2, anchor='center')
+
+    appearance_menu = customtkinter.CTkOptionMenu(master=tl9, values=['Dark', 'Light', 'System'], font=('Gill Sans MT', 15), command=lambda mode: appearance_change(mode))
+    appearance_menu.place(relx=0.5, rely=0.3, anchor='center')
+    appearance_menu.set(current_theme)
 
     menu_button = customtkinter.CTkButton(master=tl9, text='Menu', height=50, width=200, command=lambda: main_menu(tl9), font=('Gill Sans MT', 15))
-    menu_button.place(relx=0.5,rely=0.9,anchor='center')
+    menu_button.place(relx=0.5, rely=0.9, anchor='center')
 
     tl9.mainloop()
+
+def appearance_change(mode: str):
+    global current_theme
+    current_theme = mode
+    customtkinter.set_appearance_mode(mode)
+
+def main_menu(root):
+    root.withdraw()
+    app.deiconify()
 
 app.mainloop()
