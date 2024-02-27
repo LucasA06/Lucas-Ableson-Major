@@ -12,10 +12,11 @@ app.resizable(False,False)
     
 def open_leagues():
     app.withdraw()
-    tl1 = customtkinter.CTk()
-    tl1.geometry("500x600")
-    tl1.title("Leagues")
-    tl1.mainloop()
+    tl = Tk()
+    tl.geometry("500x600")
+    tl.title("Leagues")
+    tl.resizable(False,False)
+    tl.mainloop()
 
 def open_players():
     app.withdraw()
