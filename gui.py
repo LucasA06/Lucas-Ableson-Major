@@ -185,33 +185,41 @@ def create_about():
 current_theme = 'Dark'
 
 def create_settings():
-    global current_theme
-
     tl9 = customtkinter.CTk()
     tl9.geometry("500x600")
     tl9.title("Settings")
     tl9.resizable(False, False)
 
-    def change_window_size(value):
-        width, height = value, app.winfo_height()
-        app.geometry(f"{width}x{height}")
-        initial_size_label.configure(text=f"Window Size: {width}x{height}")
+    def change_window_width(value):
+        width = app.winfo_width()
+        app.geometry(f"{value}x{app.winfo_width()}")
+        initial_size_label.configure(text=f"Window Size: {value}x{width}")
+
+    def change_window_height(value):
+        height = app.winfo_height()
+        app.geometry(f"{app.winfo_height()}x{value}")
+        initial_size_label.configure(text=f"Window Size: {height}x{value}")
 
     size_label = customtkinter.CTkLabel(master=tl9, text='Window Size', font=('Gill Sans MT', 15))
     size_label.place(relx=0.5, rely=0.4, anchor='center')
 
-    size_slider = customtkinter.CTkSlider(master=tl9, from_=300, to=800, orientation='horizontal', width=400, command=change_window_size, number_of_steps=5)
-    size_slider.set(app.winfo_width())
-    size_slider.place(relx=0.5, rely=0.5, anchor='center')
+    width_slider = customtkinter.CTkSlider(master=tl9, from_=300, to=800, orientation='horizontal', width=400, command=change_window_width, number_of_steps=2)
+    width_slider.set(app.winfo_width())
+    width_slider.place(relx=0.5, rely=0.45, anchor='center')
+
+    height_slider = customtkinter.CTkSlider(master=tl9, from_=300, to=800, orientation='horizontal', width=400, command=change_window_height, number_of_steps=2)
+    height_slider.set(app.winfo_height())
+    height_slider.place(relx=0.5, rely=0.5, anchor='center')
 
     initial_width, initial_height = app.winfo_width(), app.winfo_height()
     initial_size_label = customtkinter.CTkLabel(master=tl9, text=f"Window Size: {initial_width}x{initial_height}", font=('Gill Sans MT', 15))
     initial_size_label.place(relx=0.5, rely=0.6, anchor='center')
 
-    label = customtkinter.CTkLabel(master=tl9, text='Settings', font=('Gill Sans MT', 30))
-    label.place(relx=0.5, rely=0.05, anchor='center')
-    label2 = customtkinter.CTkLabel(master=tl9, text='Appearance', font=('Gill Sans MT', 15))
-    label2.place(relx=0.5, rely=0.2, anchor='center')
+    width_label = customtkinter.CTkLabel(master=tl9, text="Width", font=('Gill Sans MT', 15))
+    width_label.place(relx=0.5, rely=0.45, anchor='center')
+
+    height_label = customtkinter.CTkLabel(master=tl9, text="Height", font=('Gill Sans MT', 15))
+    height_label.place(relx=0.5, rely=0.5, anchor='center')
 
     appearance_menu = customtkinter.CTkOptionMenu(master=tl9, values=['Dark', 'Light', 'System'], font=('Gill Sans MT', 15), command=lambda mode: appearance_change(mode))
     appearance_menu.place(relx=0.5, rely=0.3, anchor='center')
