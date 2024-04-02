@@ -1,0 +1,1 @@
+This is my major project which consits of a football database app with data from online sources and is a place where you can keep up to day with the latest football related data and also look at data from the past.
