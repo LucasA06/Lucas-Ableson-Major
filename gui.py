@@ -1,29 +1,21 @@
 from tkinter import *
 import customtkinter
 import tkinter as tk
+import gettext
 import csv
+import soccerdata as sd
+import pandas as pd
 
 customtkinter.set_appearance_mode('dark')
 customtkinter.set_default_color_theme('blue')
 app = customtkinter.CTk()
-app.geometry("600x700")
+app.geometry("600x665")
 app.title("Football Database App")
 app.resizable(False,False)
     
 def open_leagues():
     app.withdraw()
-    tl = Tk()
-    tl.geometry("500x600")
-    tl.title("Leagues")
-    tl.resizable(False,False)
-    tl.mainloop()
-
-def open_players():
-    app.withdraw()
-    tl2 = customtkinter.CTk()
-    tl2.geometry("500x600")
-    tl2.title("Players")
-    tl2.mainloop()   
+    create_leagues()
 
 def open_teams():
     app.withdraw()
@@ -32,9 +24,12 @@ def open_teams():
     tl3.title("Teams")
     tl3.mainloop()
 
-def open_stats():
+def open_players():
     app.withdraw()
-    create_stats()
+    tl2 = customtkinter.CTk()
+    tl2.geometry("500x600")
+    tl2.title("Players")
+    tl2.mainloop()
 
 def open_favs():
     app.withdraw()
@@ -89,12 +84,10 @@ sidebar_button3 = customtkinter.CTkButton(sidebar,width=85,text='Players',comman
 sidebar_button3.grid(row=3, column=0,padx=10,pady=5)
 sidebar_button4 = customtkinter.CTkButton(sidebar,width=85,text='Leagues',command=open_leagues, font=('Gill Sans MT', 15))
 sidebar_button4.grid(row=4, column=0,padx=10,pady=5)
-sidebar_button5 = customtkinter.CTkButton(sidebar,width=85,text='Stats',command=open_stats, font=('Gill Sans MT', 15))
-sidebar_button5.grid(row=5, column=0,padx=10,pady=5)
 sidebar_button6 = customtkinter.CTkButton(sidebar,width=85,text='Favourites',command=open_favs, font=('Gill Sans MT', 15))
-sidebar_button6.grid(row=6, column=0,padx=10,pady=5)
+sidebar_button6.grid(row=5, column=0,padx=10,pady=5)
 sidebar_button7 = customtkinter.CTkButton(sidebar,width=85,text='Years',command=open_years, font=('Gill Sans MT', 15))
-sidebar_button7.grid(row=7, column=0,padx=10,pady=5)
+sidebar_button7.grid(row=6, column=0,padx=10,pady=5)
 sidebar_button11 = customtkinter.CTkButton(sidebar,width=85,text='',fg_color='',hover=False)
 sidebar_button11.grid(row=9, column=0,padx=10,pady=125)
 sidebar_button8 = customtkinter.CTkButton(sidebar,width=85,text='Tools',command=open_tools, font=('Gill Sans MT', 15))
@@ -127,42 +120,25 @@ player_text = customtkinter.CTkLabel(master=app,text='Player Card',font=('Gill S
 player_text.place(relx=0.7,rely=0.2)
 
 ranking_frame = customtkinter.CTkFrame(master=app,width=200,height=200,corner_radius=0)
-ranking_frame.place(relx=0.225,rely=0.65)
+ranking_frame.place(relx=0.225,rely=0.67)
 ranking_text = customtkinter.CTkLabel(master=app,text='Player/Team\nRankings',font=('Gill Sans MT', 22))
-ranking_text.place(relx=0.3,rely=0.561)
+ranking_text.place(relx=0.3,rely=0.575)
 
 team_frame = customtkinter.CTkFrame(master=app,width=200,height=200,corner_radius=0)
 team_frame.place(relx=0.625,rely=0.625)
 team_text = customtkinter.CTkLabel(master=app,text='Team Card',font=('Gill Sans MT', 22))
 team_text.place(relx=0.71,rely=0.57)
 
-def create_stats():
+def create_leagues():
     tl4 = tk.Tk()
-    tl4.geometry("500x600")
-    tl4.title("Statistics")
+    tl4.geometry("1000x600")
+    tl4.title("Premier League 2022/2023")
     tl4.resizable(False, False)
 
-    with open(r'C:\Users\lucas\OneDrive\Documents\GitHub\Lucas-Ableson-Major/.csv files/17/Players/PL Player Goals.csv', encoding='utf-8') as file:
-        reader = csv.reader(file)
-        data = list(reader)
-
-    for row in data:
-        if len(row) >= 3:
-            parts = row[0].split('|')
-            if len(parts) >= 3:
-                name = parts[0].split(',')[2].strip()
-                goal_tally = parts[1].strip()
-                position = parts[2].strip()
-
-                label = tk.Label(tl4, text=f"Name: {name}, Position: {position}, Goals: {goal_tally}")
-                label.place(relx=0.5, rely=0.1, anchor='center')
-                label.pack()
-
-    menu_button = tk.Button(master=tl4, text='Menu', height=50, width=200, command=lambda: main_menu(tl4), font=('Gill Sans MT', 15))
-    menu_button.place(relx=0.5, rely=0.9, anchor='center')
+    fbref = sd.FBref(leagues = ['ENG-Premier League'], seasons = ['2223'])
+    season_stats = fbref.read_team_season_stats(stat_type='standard')
 
     tl4.mainloop()
-
 
 def create_about():
     tl8 = customtkinter.CTk()
@@ -185,46 +161,36 @@ def create_about():
 
 current_theme = 'Dark'
 
+current_theme = 'Dark'
+
+def save_current_theme():
+    with open('current_theme.txt', 'w') as file:
+        file.write(current_theme)
+
+def load_current_theme():
+    try:
+        with open('current_theme.txt', 'r') as file:
+            return file.read().strip()
+    except FileNotFoundError:
+        return 'Dark'
+
 def create_settings():
+    current_theme = load_current_theme()
+
     tl9 = customtkinter.CTk()
     tl9.geometry("500x600")
     tl9.title("Settings")
     tl9.resizable(False, False)
 
-    def change_window_width(value):
-        width = app.winfo_width()
-        app.geometry(f"{value}x{app.winfo_width()}")
-        initial_size_label.configure(text=f"Window Size: {value}x{width}")
+    settings_label = customtkinter.CTkLabel(master=tl9, text='Settings', font=('Gill Sans MT', 30))
+    settings_label.place(relx=0.5, rely=0.05, anchor='center')
 
-    def change_window_height(value):
-        height = app.winfo_height()
-        app.geometry(f"{app.winfo_height()}x{value}")
-        initial_size_label.configure(text=f"Window Size: {height}x{value}")
-
-    size_label = customtkinter.CTkLabel(master=tl9, text='Window Size', font=('Gill Sans MT', 15))
-    size_label.place(relx=0.5, rely=0.4, anchor='center')
-
-    width_slider = customtkinter.CTkSlider(master=tl9, from_=300, to=800, orientation='horizontal', width=400, command=change_window_width, number_of_steps=2)
-    width_slider.set(app.winfo_width())
-    width_slider.place(relx=0.5, rely=0.45, anchor='center')
-
-    height_slider = customtkinter.CTkSlider(master=tl9, from_=300, to=800, orientation='horizontal', width=400, command=change_window_height, number_of_steps=2)
-    height_slider.set(app.winfo_height())
-    height_slider.place(relx=0.5, rely=0.5, anchor='center')
-
-    initial_width, initial_height = app.winfo_width(), app.winfo_height()
-    initial_size_label = customtkinter.CTkLabel(master=tl9, text=f"Window Size: {initial_width}x{initial_height}", font=('Gill Sans MT', 15))
-    initial_size_label.place(relx=0.5, rely=0.6, anchor='center')
-
-    width_label = customtkinter.CTkLabel(master=tl9, text="Width", font=('Gill Sans MT', 15))
-    width_label.place(relx=0.5, rely=0.45, anchor='center')
-
-    height_label = customtkinter.CTkLabel(master=tl9, text="Height", font=('Gill Sans MT', 15))
-    height_label.place(relx=0.5, rely=0.5, anchor='center')
+    apperance_label = customtkinter.CTkLabel(master=tl9, text='Appearance', font=('Gill Sans MT', 20))
+    apperance_label.place(relx=0.5, rely=0.2, anchor='center')
 
     appearance_menu = customtkinter.CTkOptionMenu(master=tl9, values=['Dark', 'Light', 'System'], font=('Gill Sans MT', 15), command=lambda mode: appearance_change(mode))
     appearance_menu.place(relx=0.5, rely=0.3, anchor='center')
-    appearance_menu.set(current_theme)
+    appearance_menu.set(current_theme)  # Set the current theme in the menu
 
     menu_button = customtkinter.CTkButton(master=tl9, text='Menu', height=50, width=200, command=lambda: main_menu(tl9), font=('Gill Sans MT', 15))
     menu_button.place(relx=0.5, rely=0.9, anchor='center')
@@ -235,6 +201,7 @@ def appearance_change(mode: str):
     global current_theme
     current_theme = mode
     customtkinter.set_appearance_mode(mode)
+    save_current_theme()
 
 def main_menu(root):
     root.withdraw()

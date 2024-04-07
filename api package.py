@@ -1,14 +1,15 @@
 import requests
 
-url = "https://football-pro.p.rapidapi.com/api/v2.0/fixtures/11867339"
-
-querystring = {"include":"stats","tz":"Europe/Amsterdam"}
+api_key = 'e4813eefc4msh22f23665b1c6eabp14e427jsna2d1b1e61863'
+url = 'https://api.football-data.org/v2/competitions/2021/standings'
 
 headers = {
-	"X-RapidAPI-Key": "e4813eefc4msh22f23665b1c6eabp14e427jsna2d1b1e61863",
-	"X-RapidAPI-Host": "football-pro.p.rapidapi.com"
+    'X-Auth-Token': api_key
 }
 
-response = requests.get(url, headers=headers, params=querystring)
+response = requests.get(url, headers=headers)
 
-print(response.json())
+if response.status_code == 200:
+    data = response.json()
+else:
+    print(f'Error: {response.status_code}')
