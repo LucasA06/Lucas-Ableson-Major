@@ -158,9 +158,12 @@ def create_about():
     label = customtkinter.CTkLabel(master=tl8,text='About',font=('Gill Sans MT', 30))
     label.place(relx=0.5,rely=0.05,anchor='center')
 
-    textbox = customtkinter.CTkTextbox(master=tl8, width=475, height=425)
+    textbox = customtkinter.CTkTextbox(master=tl8, width=475, height=425, font =('Gill Sans MT', 15))
     textbox.place(relx=0.5,rely=0.4)
-    textbox.insert('1.0', "This is a football database app created by Lucas. It is still in development and is not yet complete.")
+    with open (r'C:\Users\lucas\OneDrive\Documents\GitHub\Lucas-Ableson-Major\about.txt') as file:
+        data = file.read()
+    textbox.insert('1.0',data)
+
     textbox.configure(state='disabled')
     textbox.place(relx=0.5,rely=0.45,anchor='center')
 
