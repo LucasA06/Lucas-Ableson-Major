@@ -1,10 +1,10 @@
 from tkinter import *
 import customtkinter
-import matplotlib.pyplot as plt
-import pandas as pd
-from plottable import Table
+import tkinter as tk
+import gettext
+import csv
 import soccerdata as sd
-import pandastable as pt
+import pandas as pd
 
 customtkinter.set_appearance_mode('dark')
 customtkinter.set_default_color_theme('blue')
@@ -139,18 +139,13 @@ def create_rankings():
     tl8.resizable(False,False)
 
 def create_leagues():
-    tl4 = customtkinter.CTk()
-    tl4.geometry("600x550")
+    tl4 = tk.Tk()
+    tl4.geometry("1000x600")
     tl4.title("League Statistics")
     tl4.resizable(False, False)
 
     fbref = sd.FBref(leagues = ['ENG-Premier League'], seasons = ['2223'])
     season_stats = fbref.read_team_season_stats(stat_type='standard')
-    df = pd.DataFrame(season_stats)
-    frame = customtkinter.CTkScrollableFrame(master=tl4)
-    table = pt.Table(tl4,df, showtoolbar=True, showstatusbar=True)
-    table.show()
-
 
     tl4.mainloop()
 
