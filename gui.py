@@ -79,7 +79,7 @@ def create_home():
     button1.place(relx=0.2, rely=0.1)
     button2 =customtkinter.CTkButton(master=app,text='Players',command=open_players, font=('Gill Sans MT', 15))
     button2.place(relx=0.475,rely=0.1)
-    button3 =customtkinter.CTkButton(master=app,text='Teams',command=open_players, font=('Gill Sans MT', 15))
+    button3 =customtkinter.CTkButton(master=app,text='Teams',command=open_teams, font=('Gill Sans MT', 15))
     button3.place(relx=0.75,rely=0.1)
     entry = customtkinter.CTkEntry(master=app, placeholder_text='Search', width=475, font=('Gill Sans MT', 15))
     entry.place(relx=0.2,rely=0.025)
@@ -104,9 +104,20 @@ create_home()
 
 def create_teams():
     tl3 = customtkinter.CTk()
-    tl3.geometry("500x600")
+    tl3.geometry("900x600")
     tl3.title("Teams")
     tl3.resizable(False,False)
+
+    fbref = sd.FBref(leagues = ['ENG-Premier League'],seasons=['2223'])
+    team_stats = fbref.read_team_season_stats(stat_type='standard')
+    team_frame = customtkinter.CTkFrame(master=tl3, width=890, height=500)
+    team_frame.place(relx=0.01, rely=0.075)
+
+    text = customtkinter.CTkTextbox(master=team_frame, font=('Gill Sans MT', 12),width=880, height = 490)
+    text.place(relx=0.01, rely=0.01)
+    text.insert('2.0', team_stats)
+
+    tl3.mainloop()
 
 def create_players():
     tl8 = customtkinter.CTk()
@@ -139,13 +150,19 @@ def create_rankings():
     tl8.resizable(False,False)
 
 def create_leagues():
-    tl4 = tk.Tk()
-    tl4.geometry("1000x600")
+    tl4 = customtkinter.CTk()
+    tl4.geometry("500x600")
     tl4.title("League Statistics")
     tl4.resizable(False, False)
 
     fbref = sd.FBref(leagues = ['ENG-Premier League'], seasons = ['2223'])
-    season_stats = fbref.read_team_season_stats(stat_type='standard')
+    season_stats = fbref.read_team_season_stats(stat_type='')
+    league_frame = customtkinter.CTkFrame(master=tl4, width=490, height=500, corner_radius=0)
+    league_frame.place(relx=0.01, rely=0.075)
+
+    table_text = customtkinter.CTkTextbox(master=league_frame, font=('Gill Sans MT', 12),width=480, height = 490)
+    table_text.place(relx=0.01, rely=0.01)
+    table_text.insert('1.0', season_stats)
 
     tl4.mainloop()
 
