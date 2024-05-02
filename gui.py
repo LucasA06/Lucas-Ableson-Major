@@ -93,7 +93,7 @@ def create_home():
     league_text = customtkinter.CTkLabel(master=app,text='League Ladder',font=('Gill Sans MT', 22))
     league_text.place(relx=0.4,rely=0.22)
 
-    player_frame = customtkinter.CTkFrame(master=app,width=200,height=150,corner_radius=0)
+    player_frame = customtkinter.CTkFrame(master=app,width=200,height=160,corner_radius=0)
     player_frame.place(relx=0.225,rely=0.7)
     player_text = customtkinter.CTkLabel(master=app,text='Player Card',font=('Gill Sans MT', 22))
     player_text.place(relx=0.275,rely=0.575)
@@ -104,10 +104,10 @@ def create_home():
     team_text.place(relx=0.71,rely=0.6)
 
     picture_dir1 = r'Ladder Pictures'
-    picture_files = [f for f in os.listdir(picture_dir1) if f.endswith('.png')]
+    picture_files = [f for f in os.listdir(picture_dir1)]
 
     pic_dir2 = r'Player Pictures'
-    pic_files2 = [f for f in os.listdir(pic_dir2) if f.endswith('.png')]
+    pic_files2 = [f for f in os.listdir(pic_dir2)]
 
     random_pic1 = random.choice(picture_files)
     random_pic2 = random.choice(pic_files2)
@@ -115,15 +115,15 @@ def create_home():
     picture_path2 = os.path.join(pic_dir2, random_pic2)
 
     league_image = Image.open(picture_path)
-    league_photo = ImageTk.PhotoImage(league_image)
+    new_photo = league_image.resize((470, 180))
+    league_photo = ImageTk.PhotoImage(new_photo)
     league_image_label = customtkinter.CTkLabel(league_frame, image=league_photo, text='')
-    league_image_label.image = league_photo
     league_image_label.place(relx=0.5, rely=0.5, anchor='center')
 
     player_image = Image.open(picture_path2)
-    player_photo = ImageTk.PhotoImage(player_image)
+    new_photo1 = player_image.resize((200, 160))
+    player_photo = ImageTk.PhotoImage(new_photo1)
     player_image_label = customtkinter.CTkLabel(player_frame, image=player_photo, text='')
-    player_image_label.image = player_photo
     player_image_label.place(relx=0.5, rely=0.5, anchor='center')
 
     league_text.configure(text=f'League Ladder - {os.path.splitext(os.path.basename(random_pic1))[0]}')
