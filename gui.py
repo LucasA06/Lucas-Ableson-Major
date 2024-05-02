@@ -1,10 +1,14 @@
 from tkinter import *
 import customtkinter
-import tkinter as tk
-import gettext
 import csv
 import soccerdata as sd
 import pandas as pd
+import seaborn as sns
+import matplotlib as plt
+from pandastable import Table, TableModel
+from PIL import ImageTk, Image
+import os
+import random
 
 customtkinter.set_appearance_mode('dark')
 customtkinter.set_default_color_theme('blue')
@@ -84,38 +88,52 @@ def create_home():
     entry = customtkinter.CTkEntry(master=app, placeholder_text='Search', width=475, font=('Gill Sans MT', 15))
     entry.place(relx=0.2,rely=0.025)
 
-    league_frame = customtkinter.CTkFrame(master=app,width=200,height=200,corner_radius=0)
-    league_frame.place(relx=0.225,rely=0.275)
+    league_frame = customtkinter.CTkFrame(master=app,width=470,height=180,corner_radius=0)
+    league_frame.place(relx=0.2,rely=0.275)
     league_text = customtkinter.CTkLabel(master=app,text='League Ladder',font=('Gill Sans MT', 22))
-    league_text.place(relx=0.29,rely=0.22)
+    league_text.place(relx=0.4,rely=0.22)
+
     player_frame = customtkinter.CTkFrame(master=app,width=200,height=200,corner_radius=0)
-    player_frame.place(relx=0.625,rely=0.25)
+    player_frame.place(relx=0.225,rely=0.67)
     player_text = customtkinter.CTkLabel(master=app,text='Player Card',font=('Gill Sans MT', 22))
-    player_text.place(relx=0.7,rely=0.2)
-    ranking_frame = customtkinter.CTkFrame(master=app,width=200,height=200,corner_radius=0)
-    ranking_frame.place(relx=0.225,rely=0.67)
-    ranking_text = customtkinter.CTkLabel(master=app,text='Player/Team\nRankings',font=('Gill Sans MT', 22))
-    ranking_text.place(relx=0.3,rely=0.575)
+    player_text.place(relx=0.3,rely=0.6)
+
     team_frame = customtkinter.CTkFrame(master=app,width=200,height=200,corner_radius=0)
-    team_frame.place(relx=0.625,rely=0.625)
+    team_frame.place(relx=0.625,rely=0.67)
     team_text = customtkinter.CTkLabel(master=app,text='Team Card',font=('Gill Sans MT', 22))
-    team_text.place(relx=0.71,rely=0.57)
+    team_text.place(relx=0.71,rely=0.6)
+
+    pictures_dir = r'Ladder Pictures'
+    picture_files = [f for f in os.listdir(pictures_dir) if f.endswith('.png')]
+
+    random_picture = random.choice(picture_files)
+    picture_path = os.path.join(pictures_dir, random_picture)
+
+    league_image = Image.open(picture_path)
+    league_photo = ImageTk.PhotoImage(league_image)
+    league_image_label = customtkinter.CTkLabel(league_frame, image=league_photo, text='')
+    league_image_label.image = league_photo
+    league_image_label.place(relx=0.5, rely=0.5, anchor='center')
+
+    league_text.configure(text=f'League Ladder - {os.path.splitext(os.path.basename(random_picture))[0]}')
+
 create_home()
 
 def create_teams():
-    tl3 = customtkinter.CTk()
-    tl3.geometry("900x600")
+    tl3 = Tk()
+    tl3.geometry("1800x1000")
     tl3.title("Teams")
-    tl3.resizable(False,False)
+    tl3.resizable(False, False)
 
-    fbref = sd.FBref(leagues = ['ENG-Premier League'],seasons=['2223'])
+    fbref = sd.FBref(leagues=['ENG-Premier League'], seasons=['2223'])
     team_stats = fbref.read_team_season_stats(stat_type='standard')
-    team_frame = customtkinter.CTkFrame(master=tl3, width=890, height=500)
-    team_frame.place(relx=0.01, rely=0.075)
+    df = pd.DataFrame(team_stats)
+    txt = Text(tl3, width=180,height=100)
+    txt.place(x=0, y=0)          
+    txt.insert(END, df)
 
-    text = customtkinter.CTkTextbox(master=team_frame, font=('Gill Sans MT', 12),width=880, height = 490)
-    text.place(relx=0.01, rely=0.01)
-    text.insert('2.0', team_stats)
+    menu_button = customtkinter.CTkButton(master=tl3, text='Menu', height=40, width=150, command=lambda: main_menu(tl3), font=('Gill Sans MT', 15))
+    menu_button.place(relx=0.5, rely=0.95, anchor='center')
 
     tl3.mainloop()
 
@@ -173,16 +191,15 @@ def create_about():
     tl8.resizable(False,False)
 
     label = customtkinter.CTkLabel(master=tl8,text='About',font=('Gill Sans MT', 30))
-    label.place(relx=0.5,rely=0.05,anchor='center')
+    label.place(relx=0.425,rely=0.01)
 
-    textbox = customtkinter.CTkTextbox(master=tl8, width=475, height=425, font =('Gill Sans MT', 15))
-    textbox.place(relx=0.5,rely=0.4)
+    textbox = customtkinter.CTkTextbox(master=tl8, width=475, height=450, font =('Gill Sans MT', 15))
+    textbox.place(relx=0.025,rely=0.1)
     with open (r'C:\Users\lucas\OneDrive\Documents\GitHub\Lucas-Ableson-Major\about.txt') as file:
         data = file.read()
     textbox.insert('1.0',data)
 
     textbox.configure(state='disabled')
-    textbox.place(relx=0.5,rely=0.45,anchor='center')
 
     menu_button = customtkinter.CTkButton(master=tl8, text='Menu', height=50, width=200, command=lambda: main_menu(tl8), font=('Gill Sans MT', 15))
     menu_button.place(relx=0.5,rely=0.9,anchor='center')
