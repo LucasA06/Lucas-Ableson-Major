@@ -207,7 +207,7 @@ def create_about():
 
     textbox = customtkinter.CTkTextbox(master=tl8, width=475, height=450, font =('Gill Sans MT', 15))
     textbox.place(relx=0.025,rely=0.1)
-    with open (r'C:\Users\lucas\OneDrive\Documents\GitHub\Lucas-Ableson-Major\about.txt') as file:
+    with open (r'about.txt') as file:
         data = file.read()
     textbox.insert('1.0',data)
 
