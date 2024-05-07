@@ -88,20 +88,14 @@ def create_home():
     entry = customtkinter.CTkEntry(master=app, placeholder_text='Search', width=475, font=('Gill Sans MT', 15))
     entry.place(relx=0.2,rely=0.025)
 
-    league_frame = customtkinter.CTkFrame(master=app,width=470,height=180,corner_radius=0)
-    league_frame.place(relx=0.2,rely=0.275)
     league_text = customtkinter.CTkLabel(master=app,text='League Ladder',font=('Gill Sans MT', 22))
-    league_text.place(relx=0.4,rely=0.22)
+    league_text.place(relx=0.35,rely=0.22)
 
-    player_frame = customtkinter.CTkFrame(master=app,width=200,height=160,corner_radius=0)
-    player_frame.place(relx=0.225,rely=0.7)
     player_text = customtkinter.CTkLabel(master=app,text='Player Card',font=('Gill Sans MT', 22))
-    player_text.place(relx=0.275,rely=0.575)
+    player_text.place(relx=0.25,rely=0.57)
 
-    team_frame = customtkinter.CTkFrame(master=app,width=200,height=200,corner_radius=0)
-    team_frame.place(relx=0.625,rely=0.67)
     team_text = customtkinter.CTkLabel(master=app,text='Team Card',font=('Gill Sans MT', 22))
-    team_text.place(relx=0.71,rely=0.6)
+    team_text.place(relx=0.65,rely=0.57)
 
     picture_dir1 = r'Ladder Pictures'
     picture_files = [f for f in os.listdir(picture_dir1)]
@@ -109,25 +103,37 @@ def create_home():
     pic_dir2 = r'Player Pictures'
     pic_files2 = [f for f in os.listdir(pic_dir2)]
 
+    pic_dir3 = r'Team Pictures'
+    pic_files3 = [f for f in os.listdir(pic_dir3)]
+
     random_pic1 = random.choice(picture_files)
     random_pic2 = random.choice(pic_files2)
+    random_pic3 = random.choice(pic_files3)
     picture_path = os.path.join(picture_dir1, random_pic1)
     picture_path2 = os.path.join(pic_dir2, random_pic2)
+    picture_path3 = os.path.join(pic_dir3, random_pic3)
 
     league_image = Image.open(picture_path)
-    new_photo = league_image.resize((470, 180))
-    league_photo = ImageTk.PhotoImage(new_photo)
-    league_image_label = customtkinter.CTkLabel(league_frame, image=league_photo, text='')
-    league_image_label.place(relx=0.5, rely=0.5, anchor='center')
+    new_photo1 = league_image.resize((560, 201))
+    league_photo = ImageTk.PhotoImage(new_photo1)
+    league_image_label = customtkinter.CTkLabel(app, image=league_photo, text='')
+    league_image_label.place(relx=0.6, rely=0.4, anchor='center')
 
     player_image = Image.open(picture_path2)
-    new_photo1 = player_image.resize((200, 160))
-    player_photo = ImageTk.PhotoImage(new_photo1)
-    player_image_label = customtkinter.CTkLabel(player_frame, image=player_photo, text='')
-    player_image_label.place(relx=0.5, rely=0.5, anchor='center')
+    new_photo2 = player_image.resize((300, 180))
+    player_photo = ImageTk.PhotoImage(new_photo2)
+    player_image_label = customtkinter.CTkLabel(app, image=player_photo, text='')
+    player_image_label.place(relx=0.37, rely=0.8, anchor='center')
+
+    team_image = Image.open(picture_path3)
+    new_photo3 = team_image.resize((350, 200))
+    team_photo = ImageTk.PhotoImage(new_photo3)
+    team_image_label = customtkinter.CTkLabel(app, image=team_photo, text='',)
+    team_image_label.place(relx=0.775, rely=0.8, anchor='center')
 
     league_text.configure(text=f'League Ladder - {os.path.splitext(os.path.basename(random_pic1))[0]}')
-    player_text.configure(text=f'Player Card -\n {os.path.splitext(os.path.basename(random_pic2))[0]}')
+    player_text.configure(text=f'Player Card \n {os.path.splitext(os.path.basename(random_pic2))[0]}')
+    team_text.configure(text=f'Team Card \n {os.path.splitext(os.path.basename(random_pic3))[0]}')
 
 create_home()
 
