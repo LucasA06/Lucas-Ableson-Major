@@ -9,4 +9,4 @@
 
 ## Soultions:
 
-1. I have used the .resize feature of PhotoImage to make it relative to the size of different computers and monitors. The pictures are saved as part of the github repository and are pulled from it into the main gui home page of my gui.
+1. I have used the .resize feature of PhotoImage to make it relative to the size of different computers and monitors. The pictures are saved as part of the github repository and are pulled from it into the main gui home page of my gui. I also used app.minsize and app.maxsize to make sure that the main window's size cannot be changed no matter how big or small someones monitor is.

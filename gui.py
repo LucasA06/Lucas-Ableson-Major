@@ -14,6 +14,8 @@ customtkinter.set_appearance_mode('dark')
 customtkinter.set_default_color_theme('blue')
 app = customtkinter.CTk()
 app.geometry("600x665")
+app.minsize(600,665)
+app.maxsize(600,665)
 app.title("Football Database App")
 app.resizable(False,False)
 
@@ -89,7 +91,7 @@ def create_home():
     entry.place(relx=0.2,rely=0.025)
 
     league_text = customtkinter.CTkLabel(master=app,text='League Ladder',font=('Gill Sans MT', 22))
-    league_text.place(relx=0.35,rely=0.22)
+    league_text.place(relx=0.4,rely=0.21, anchor='w')
 
     player_text = customtkinter.CTkLabel(master=app,text='Player Card',font=('Gill Sans MT', 22))
     player_text.place(relx=0.25,rely=0.57)
@@ -113,8 +115,10 @@ def create_home():
     picture_path2 = os.path.join(pic_dir2, random_pic2)
     picture_path3 = os.path.join(pic_dir3, random_pic3)
 
+    league_frame = customtkinter.CTkFrame(app, width=450, height=175, border_width=5, border_color='black')
+    league_frame.place(relx=0.6, rely=0.4, anchor='center')
     league_image = Image.open(picture_path)
-    new_photo1 = league_image.resize((560, 201))
+    new_photo1 = league_image.resize((650, 250))
     league_photo = ImageTk.PhotoImage(new_photo1)
     league_image_label = customtkinter.CTkLabel(app, image=league_photo, text='')
     league_image_label.place(relx=0.6, rely=0.4, anchor='center')
