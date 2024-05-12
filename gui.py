@@ -1,23 +1,25 @@
-from tkinter import *
+import tkinter as tk
+from tkinter import ttk
 import customtkinter
-import csv
 import soccerdata as sd
 import pandas as pd
-import seaborn as sns
-import matplotlib as plt
-from pandastable import Table, TableModel
 from PIL import ImageTk, Image
+import tksheet
 import os
 import random
 
 customtkinter.set_appearance_mode('dark')
 customtkinter.set_default_color_theme('blue')
+
 app = customtkinter.CTk()
 app.geometry("600x665")
 app.minsize(600,665)
 app.maxsize(600,665)
 app.title("Football Database App")
 app.resizable(False,False)
+
+style = ttk.Style()
+style.configure("Treeview", background="dimgrey", foreground="white", fieldbackground="dimgrey")
 
 def open_leagues():
     app.withdraw()
@@ -112,22 +114,25 @@ def create_home():
     picture_path3 = os.path.join(pic_dir3, random_pic3)
 
     league_image = Image.open(picture_path)
-    new_photo1 = league_image.resize((650, 250))
+    new_photo1 = league_image.resize((650, 250),Image.BILINEAR)
     league_photo = ImageTk.PhotoImage(new_photo1)
     league_image_label = customtkinter.CTkLabel(app, image=league_photo, text='')
     league_image_label.place(relx=0.6, rely=0.375, anchor='center')
+    league_image_label.image= league_photo
 
     player_image = Image.open(picture_path2)
-    new_photo2 = player_image.resize((300, 180))
+    new_photo2 = player_image.resize((300, 180), Image.BILINEAR)
     player_photo = ImageTk.PhotoImage(new_photo2)
     player_image_label = customtkinter.CTkLabel(app, image=player_photo, text='')
     player_image_label.place(relx=0.375, rely=0.8, anchor='center')
+    player_image_label.image = player_photo
 
     team_image = Image.open(picture_path3)
-    new_photo3 = team_image.resize((350, 200))
+    new_photo3 = team_image.resize((350, 200), Image.BILINEAR)
     team_photo = ImageTk.PhotoImage(new_photo3)
     team_image_label = customtkinter.CTkLabel(app, image=team_photo, text='')
     team_image_label.place(relx=0.785, rely=0.8, anchor='center')
+    team_image_label.image = team_photo
 
     league_text.configure(text=f'League Ladder - {os.path.splitext(os.path.basename(random_pic1))[0]}')
     player_text.configure(text=f'Player Card \n {os.path.splitext(os.path.basename(random_pic2))[0]}')
@@ -136,20 +141,50 @@ def create_home():
 create_home()
 
 def create_teams():
-    tl3 = Tk()
-    tl3.geometry("1800x1000")
+    tl3 = tk.Tk()
+    tl3.geometry("900x600")
     tl3.title("Teams")
     tl3.resizable(False, False)
+    tl3.configure(bg="dimgrey")  # Set background color to black
 
     fbref = sd.FBref(leagues=['ENG-Premier League'], seasons=['2223'])
     team_stats = fbref.read_team_season_stats(stat_type='standard')
     df = pd.DataFrame(team_stats)
-    txt = Text(tl3, width=180,height=100)
-    txt.place(x=0, y=0)          
-    txt.insert(END, df)
 
-    menu_button = customtkinter.CTkButton(master=tl3, text='Menu', height=40, width=150, command=lambda: main_menu(tl3), font=('Gill Sans MT', 15))
-    menu_button.place(relx=0.5, rely=0.95, anchor='center')
+    # Remove unwanted columns and set desired column order
+    df = df.drop(columns=['Per 90 Minutes', 'Progression', 'url'])
+
+    teams = ['Arsenal', 'Aston Villa', 'Bournemouth', 'Brentford', 'Brighton', 
+             'Chelsea', 'Crystal Palace', 'Everton', 'Fulham', 'Leeds United', 
+             'Leicester City', 'Liverpool', 'Manchester City', 'Manchester Utd', 
+             'Newcastle Utd', "Nott'ham Forest", 'Southampton', 'Tottenham', 
+             'West Ham', 'Wolves']
+
+    df.insert(0, 'Team', teams)
+
+    # Create Treeview widget
+    tree = ttk.Treeview(tl3, style="Treeview")
+    tree["columns"] = df.columns.tolist()
+    tree["show"] = "headings"
+
+    # Add columns
+    for column in df.columns:
+        tree.heading(column, text=column)
+
+    # Add data to the treeview
+    for index, row in df.iterrows():
+        tree.insert("", "end", values=tuple(row))
+
+    # Add scrollbar
+    xscrollbar = ttk.Scrollbar(tl3, orient='horizontal', command=tree.xview)
+    tree.configure(xscroll=xscrollbar.set)
+    xscrollbar.pack(side='bottom', fill="x")
+
+    # Add the treeview to the window
+    tree.pack(expand=True, fill="both",pady=(75,0))
+
+    menu_button = tk.Button(master=tl3, text='Menu', height=1, width=7, command=lambda: main_menu(tl3), font=('Gill Sans MT', 15),bg='steelblue',fg='white',)
+    menu_button.place(relx=0.5, rely=0.925, anchor='center')
 
     tl3.mainloop()
 
