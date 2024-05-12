@@ -92,19 +92,26 @@ def create_home():
 
     league_text = customtkinter.CTkLabel(master=app,text='League Ladder',font=('Gill Sans MT', 22))
     league_text.place(relx=0.4,rely=0.21, anchor='w')
-
     player_text = customtkinter.CTkLabel(master=app,text='Player Card',font=('Gill Sans MT', 22))
-    player_text.place(relx=0.25,rely=0.57)
-
+    player_text.place(relx=0.255,rely=0.57)
     team_text = customtkinter.CTkLabel(master=app,text='Team Card',font=('Gill Sans MT', 22))
-    team_text.place(relx=0.65,rely=0.57)
+    team_text.place(relx=0.655,rely=0.57)
+
+    screen_width = app.winfo_screenwidth()
+    screen_height = app.winfo_screenheight()
+
+    # Set the heights and widths of pictures to display across all screens
+    league_width = int(screen_width * 0.225)
+    league_height = int(screen_height * 0.15)
+    player_width = int(screen_width * 0.115)
+    player_height = int(screen_height * 0.125)
+    team_width = int(screen_width * 0.125)
+    team_height = int(screen_height * 0.1175)
 
     picture_dir1 = r'Ladder Pictures'
     picture_files = [f for f in os.listdir(picture_dir1)]
-
     pic_dir2 = r'Player Pictures'
     pic_files2 = [f for f in os.listdir(pic_dir2)]
-
     pic_dir3 = r'Team Pictures'
     pic_files3 = [f for f in os.listdir(pic_dir3)]
 
@@ -115,25 +122,26 @@ def create_home():
     picture_path2 = os.path.join(pic_dir2, random_pic2)
     picture_path3 = os.path.join(pic_dir3, random_pic3)
 
-    league_frame = customtkinter.CTkFrame(app, width=450, height=175, border_width=5, border_color='black')
-    league_frame.place(relx=0.6, rely=0.4, anchor='center')
     league_image = Image.open(picture_path)
-    new_photo1 = league_image.resize((650, 250))
-    league_photo = ImageTk.PhotoImage(new_photo1)
+    league_image = league_image.resize((league_width, league_height))
+    league_photo = ImageTk.PhotoImage(league_image)
     league_image_label = customtkinter.CTkLabel(app, image=league_photo, text='')
-    league_image_label.place(relx=0.6, rely=0.4, anchor='center')
+    league_image_label.image = league_photo
+    league_image_label.place(relx=0.6, rely=0.375, anchor='center')
 
     player_image = Image.open(picture_path2)
-    new_photo2 = player_image.resize((300, 180))
-    player_photo = ImageTk.PhotoImage(new_photo2)
+    player_image = player_image.resize((player_width, player_height))
+    player_photo = ImageTk.PhotoImage(player_image)
     player_image_label = customtkinter.CTkLabel(app, image=player_photo, text='')
-    player_image_label.place(relx=0.37, rely=0.8, anchor='center')
+    player_image_label.image = player_photo
+    player_image_label.place(relx=0.375, rely=0.8, anchor='center')
 
     team_image = Image.open(picture_path3)
-    new_photo3 = team_image.resize((350, 200))
-    team_photo = ImageTk.PhotoImage(new_photo3)
-    team_image_label = customtkinter.CTkLabel(app, image=team_photo, text='',)
-    team_image_label.place(relx=0.775, rely=0.8, anchor='center')
+    team_image = team_image.resize((team_width, team_height))
+    team_photo = ImageTk.PhotoImage(team_image)
+    team_image_label = customtkinter.CTkLabel(app, image=team_photo, text='')
+    team_image_label.image = team_photo
+    team_image_label.place(relx=0.785, rely=0.8, anchor='center')
 
     league_text.configure(text=f'League Ladder - {os.path.splitext(os.path.basename(random_pic1))[0]}')
     player_text.configure(text=f'Player Card \n {os.path.splitext(os.path.basename(random_pic2))[0]}')
