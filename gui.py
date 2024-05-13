@@ -1,3 +1,4 @@
+# Import required libaries
 import tkinter as tk
 from tkinter import ttk
 import customtkinter
@@ -8,9 +9,7 @@ import tksheet
 import os
 import random
 
-customtkinter.set_appearance_mode('dark')
-customtkinter.set_default_color_theme('blue')
-
+# Create the main app window
 app = customtkinter.CTk()
 app.geometry("600x665")
 app.minsize(600,665)
@@ -18,9 +17,14 @@ app.maxsize(600,665)
 app.title("Football Database App")
 app.resizable(False,False)
 
+# Set the appearance mode, default color theme and style for the treeview widgets
+customtkinter.set_appearance_mode('dark')
+customtkinter.set_default_color_theme('blue')
 style = ttk.Style()
 style.configure("Treeview", background="dimgrey", foreground="white", fieldbackground="dimgrey")
+current_theme = 'Dark'
 
+# All the code used to open the different pages
 def open_leagues():
     app.withdraw()
     create_leagues()
@@ -57,7 +61,9 @@ def open_rankings():
     app.withdraw()
     create_rankings()
 
+# All the code used to create the home gui page
 def create_home():
+    # Creates a grid to easily place the buttons in the sidebar frame
     sidebar = customtkinter.CTkFrame(master=app,width=100,height=700,corner_radius=0)
     sidebar.grid()
     sidebar_button1 = customtkinter.CTkButton(sidebar,width=85,text='Rankings',command=open_rankings, font=('Gill Sans MT', 15))
@@ -83,6 +89,7 @@ def create_home():
     exit_button = customtkinter.CTkButton(sidebar,width=85,text='Exit',command=app.withdraw, fg_color='red', font=('Gill Sans MT', 15))
     exit_button.grid(row=12, column=0,padx=10,pady=5)
 
+    # Create the buttons for the home screen
     button1 = customtkinter.CTkButton(master=app, text="Leagues", command=open_leagues, font=('Gill Sans MT', 15))
     button1.place(relx=0.2, rely=0.1)
     button2 =customtkinter.CTkButton(master=app,text='Players',command=open_players, font=('Gill Sans MT', 15))
@@ -92,20 +99,21 @@ def create_home():
     entry = customtkinter.CTkEntry(master=app, placeholder_text='Search', width=475, font=('Gill Sans MT', 15))
     entry.place(relx=0.2,rely=0.025)
 
+    # Titles the league, team and player cards
     league_text = customtkinter.CTkLabel(master=app,text='League Ladder',font=('Gill Sans MT', 22))
     league_text.place(relx=0.4,rely=0.21, anchor='w')
     player_text = customtkinter.CTkLabel(master=app,text='Player Card',font=('Gill Sans MT', 22))
-    player_text.place(relx=0.25,rely=0.57)
+    player_text.place(relx=0.245,rely=0.57)
     team_text = customtkinter.CTkLabel(master=app,text='Team Card',font=('Gill Sans MT', 22))
     team_text.place(relx=0.655,rely=0.57)
 
+    # Get the pictures from their respective directories and randomly select one to present
     picture_dir1 = r'Ladder Pictures'
     picture_files = [f for f in os.listdir(picture_dir1)]
     pic_dir2 = r'Player Pictures'
     pic_files2 = [f for f in os.listdir(pic_dir2)]
     pic_dir3 = r'Team Pictures'
     pic_files3 = [f for f in os.listdir(pic_dir3)]
-
     random_pic1 = random.choice(picture_files)
     random_pic2 = random.choice(pic_files2)
     random_pic3 = random.choice(pic_files3)
@@ -113,53 +121,61 @@ def create_home():
     picture_path2 = os.path.join(pic_dir2, random_pic2)
     picture_path3 = os.path.join(pic_dir3, random_pic3)
 
+    # Set the width and height of the home screen pictures
+    league_width = 650
+    league_height = int(league_width * 265/700)
+    player_width = 300
+    player_height = int(player_width * 200/300)
+    team_width = 350
+    team_height = int(team_width * 200/350)
+
+    # Opens the pictures, resizes them and displays them in the home screen
     league_image = Image.open(picture_path)
-    new_photo1 = league_image.resize((650, 250),Image.BILINEAR)
+    new_photo1 = league_image.resize((league_width, league_height))
     league_photo = ImageTk.PhotoImage(new_photo1)
     league_image_label = customtkinter.CTkLabel(app, image=league_photo, text='')
     league_image_label.place(relx=0.6, rely=0.375, anchor='center')
     league_image_label.image= league_photo
-
     player_image = Image.open(picture_path2)
-    new_photo2 = player_image.resize((300, 180), Image.BILINEAR)
+    new_photo2 = player_image.resize((player_width, player_height))
     player_photo = ImageTk.PhotoImage(new_photo2)
     player_image_label = customtkinter.CTkLabel(app, image=player_photo, text='')
     player_image_label.place(relx=0.375, rely=0.8, anchor='center')
     player_image_label.image = player_photo
-
     team_image = Image.open(picture_path3)
-    new_photo3 = team_image.resize((350, 200), Image.BILINEAR)
+    new_photo3 = team_image.resize((team_width, team_height))
     team_photo = ImageTk.PhotoImage(new_photo3)
     team_image_label = customtkinter.CTkLabel(app, image=team_photo, text='')
     team_image_label.place(relx=0.785, rely=0.8, anchor='center')
     team_image_label.image = team_photo
 
+    # Configures the card titles so that they are displaying the team, league and player names
     league_text.configure(text=f'League Ladder - {os.path.splitext(os.path.basename(random_pic1))[0]}')
     player_text.configure(text=f'Player Card \n {os.path.splitext(os.path.basename(random_pic2))[0]}')
     team_text.configure(text=f'Team Card \n {os.path.splitext(os.path.basename(random_pic3))[0]}')
 
 create_home()
 
+# code used to create and display team statistics
 def create_teams():
     tl3 = tk.Tk()
     tl3.geometry("900x600")
     tl3.title("Teams")
     tl3.resizable(False, False)
-    tl3.configure(bg="dimgrey")  # Set background color to black
+    tl3.configure(bg="dimgrey")
 
+    # Get the team statistics from the fbref module
     fbref = sd.FBref(leagues=['ENG-Premier League'], seasons=['2223'])
     team_stats = fbref.read_team_season_stats(stat_type='standard')
     df = pd.DataFrame(team_stats)
 
-    # Remove unwanted columns and set desired column order
+    # Remove unwanted columns and add teams column to the table
     df = df.drop(columns=['Per 90 Minutes', 'Progression', 'url'])
-
     teams = ['Arsenal', 'Aston Villa', 'Bournemouth', 'Brentford', 'Brighton', 
              'Chelsea', 'Crystal Palace', 'Everton', 'Fulham', 'Leeds United', 
              'Leicester City', 'Liverpool', 'Manchester City', 'Manchester Utd', 
              'Newcastle Utd', "Nott'ham Forest", 'Southampton', 'Tottenham', 
              'West Ham', 'Wolves']
-
     df.insert(0, 'Team', teams)
 
     # Create Treeview widget
@@ -235,6 +251,7 @@ def create_leagues():
 
     tl4.mainloop()
 
+# Code used to create the about page
 def create_about():
     tl8 = customtkinter.CTk()
     tl8.geometry("500x600")
@@ -244,20 +261,19 @@ def create_about():
     label = customtkinter.CTkLabel(master=tl8,text='About',font=('Gill Sans MT', 30))
     label.place(relx=0.425,rely=0.01)
 
+    # Opens up the about text file and displays it in a textbox
     textbox = customtkinter.CTkTextbox(master=tl8, width=475, height=450, font =('Gill Sans MT', 15))
     textbox.place(relx=0.025,rely=0.1)
     with open (r'about.txt') as file:
         data = file.read()
     textbox.insert('1.0',data)
-
     textbox.configure(state='disabled')
 
     menu_button = customtkinter.CTkButton(master=tl8, text='Menu', height=50, width=200, command=lambda: main_menu(tl8), font=('Gill Sans MT', 15))
     menu_button.place(relx=0.5,rely=0.9,anchor='center')
     tl8.mainloop()
 
-current_theme = 'Dark'
-
+# Code used to create the settings page
 def create_settings():
     tl9 = customtkinter.CTk()
     tl9.geometry("500x600")
@@ -266,10 +282,10 @@ def create_settings():
 
     settings_label = customtkinter.CTkLabel(master=tl9, text='Settings', font=('Gill Sans MT', 30))
     settings_label.place(relx=0.5, rely=0.05, anchor='center')
-
     apperance_label = customtkinter.CTkLabel(master=tl9, text='Appearance', font=('Gill Sans MT', 20))
     apperance_label.place(relx=0.5, rely=0.2, anchor='center')
 
+    # Option menu to change the appearance to light, dark and system colours
     appearance_menu = customtkinter.CTkOptionMenu(master=tl9, values=['Dark', 'Light', 'System'], font=('Gill Sans MT', 15), command=lambda mode: appearance_change(mode))
     appearance_menu.place(relx=0.5, rely=0.3, anchor='center')
     appearance_menu.set(current_theme)
@@ -279,11 +295,13 @@ def create_settings():
 
     tl9.mainloop()
 
+# Command for changing the apperance of the window
 def appearance_change(mode: str):
     global current_theme, appearance_change
     current_theme = mode
     customtkinter.set_appearance_mode(mode)
 
+# Command for the main menu button
 def main_menu(root):
     root.withdraw()
     app.deiconify()
