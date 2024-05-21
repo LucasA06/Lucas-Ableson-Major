@@ -1,27 +1,23 @@
 # Import required libaries
-import tkinter as tk
+from tkinter import *
 from tkinter import ttk
 import customtkinter
 import soccerdata as sd
 import pandas as pd
 from PIL import ImageTk, Image
-import tksheet
 import os
 import random
+from CTkTable import *
 
 # Create the main app window
 app = customtkinter.CTk()
-app.geometry("600x665")
-app.minsize(600,665)
-app.maxsize(600,665)
+app.geometry("675x700")
 app.title("Football Database App")
 app.resizable(False,False)
 
-# Set the appearance mode, default color theme and style for the treeview widgets
+# Set the appearance mode for default color theme
 customtkinter.set_appearance_mode('dark')
 customtkinter.set_default_color_theme('blue')
-style = ttk.Style()
-style.configure("Treeview", background="dimgrey", foreground="white", fieldbackground="dimgrey")
 current_theme = 'Dark'
 
 # All the code used to open the different pages
@@ -64,30 +60,30 @@ def open_rankings():
 # All the code used to create the home gui page
 def create_home():
     # Creates a grid to easily place the buttons in the sidebar frame
-    sidebar = customtkinter.CTkFrame(master=app,width=100,height=700,corner_radius=0)
+    sidebar = customtkinter.CTkFrame(master=app,width=1,height=700,corner_radius=0)
     sidebar.grid()
-    sidebar_button1 = customtkinter.CTkButton(sidebar,width=85,text='Rankings',command=open_rankings, font=('Gill Sans MT', 15))
-    sidebar_button1.grid(row=1, column=0,padx=10,pady=5)
-    sidebar_button2 = customtkinter.CTkButton(sidebar,width=85,text='Teams',command=open_teams, font=('Gill Sans MT', 15))
-    sidebar_button2.grid(row=2, column=0,padx=10,pady=5)
-    sidebar_button3 = customtkinter.CTkButton(sidebar,width=85,text='Players',command=open_players, font=('Gill Sans MT', 15))
-    sidebar_button3.grid(row=3, column=0,padx=10,pady=5)
-    sidebar_button4 = customtkinter.CTkButton(sidebar,width=85,text='Leagues',command=open_leagues, font=('Gill Sans MT', 15))
-    sidebar_button4.grid(row=4, column=0,padx=10,pady=5)
-    sidebar_button6 = customtkinter.CTkButton(sidebar,width=85,text='Favourites',command=open_favs, font=('Gill Sans MT', 15))
-    sidebar_button6.grid(row=5, column=0,padx=10,pady=5)
-    sidebar_button7 = customtkinter.CTkButton(sidebar,width=85,text='Years',command=open_years, font=('Gill Sans MT', 15))
-    sidebar_button7.grid(row=6, column=0,padx=10,pady=5)
-    sidebar_button11 = customtkinter.CTkButton(sidebar,width=85,text='',fg_color='',hover=False)
-    sidebar_button11.grid(row=9, column=0,padx=10,pady=125)
-    sidebar_button8 = customtkinter.CTkButton(sidebar,width=85,text='Tools',command=open_tools, font=('Gill Sans MT', 15))
-    sidebar_button8.grid(row=8, column=0,padx=10,pady=5)
-    sidebar_button9 = customtkinter.CTkButton(sidebar,width=85,text='About',command=open_about, font=('Gill Sans MT', 15))
-    sidebar_button9.grid(row=10, column=0,padx=10,pady=5)
-    sidebar_button10 = customtkinter.CTkButton(sidebar,width=85,text='Settings',command=open_settings, font=('Gill Sans MT', 15))
-    sidebar_button10.grid(row=11, column=0,padx=10,pady=5)
-    exit_button = customtkinter.CTkButton(sidebar,width=85,text='Exit',command=app.withdraw, fg_color='red', font=('Gill Sans MT', 15))
-    exit_button.grid(row=12, column=0,padx=10,pady=5)
+    sidebar_button1 = customtkinter.CTkButton(sidebar,width=100,text='Rankings',command=open_rankings, font=('Gill Sans MT', 15))
+    sidebar_button1.grid(row=1, column=0,padx=5,pady=5)
+    sidebar_button2 = customtkinter.CTkButton(sidebar,width=100,text='Teams',command=open_teams, font=('Gill Sans MT', 15))
+    sidebar_button2.grid(row=2, column=0,padx=5,pady=5)
+    sidebar_button3 = customtkinter.CTkButton(sidebar,width=100,text='Players',command=open_players, font=('Gill Sans MT', 15))
+    sidebar_button3.grid(row=3, column=0,padx=5,pady=5)
+    sidebar_button4 = customtkinter.CTkButton(sidebar,width=100,text='Leagues',command=open_leagues, font=('Gill Sans MT', 15))
+    sidebar_button4.grid(row=4, column=0,padx=5,pady=5)
+    sidebar_button6 = customtkinter.CTkButton(sidebar,width=100,text='Favourites',command=open_favs, font=('Gill Sans MT', 15))
+    sidebar_button6.grid(row=5, column=0,padx=5,pady=5)
+    sidebar_button7 = customtkinter.CTkButton(sidebar,width=100,text='Years',command=open_years, font=('Gill Sans MT', 15))
+    sidebar_button7.grid(row=6, column=0,padx=5,pady=5)
+    sidebar_button11 = customtkinter.CTkButton(sidebar,width=100,text='',fg_color='',hover=False)
+    sidebar_button11.grid(row=9, column=0,padx=5,pady=145)
+    sidebar_button8 = customtkinter.CTkButton(sidebar,width=100,text='Tools',command=open_tools, font=('Gill Sans MT', 15))
+    sidebar_button8.grid(row=8, column=0,padx=5,pady=5)
+    sidebar_button9 = customtkinter.CTkButton(sidebar,width=100,text='About',command=open_about, font=('Gill Sans MT', 15))
+    sidebar_button9.grid(row=10, column=0,padx=5,pady=5)
+    sidebar_button10 = customtkinter.CTkButton(sidebar,width=100,text='Settings',command=open_settings, font=('Gill Sans MT', 15))
+    sidebar_button10.grid(row=11, column=0,padx=5,pady=5)
+    exit_button = customtkinter.CTkButton(sidebar,width=100,text='Exit',command=app.withdraw, fg_color='red', font=('Gill Sans MT', 15))
+    exit_button.grid(row=12, column=0,padx=5,pady=5)
 
     # Create the buttons for the home screen
     button1 = customtkinter.CTkButton(master=app, text="Leagues", command=open_leagues, font=('Gill Sans MT', 15))
@@ -96,16 +92,16 @@ def create_home():
     button2.place(relx=0.475,rely=0.1)
     button3 =customtkinter.CTkButton(master=app,text='Teams',command=open_teams, font=('Gill Sans MT', 15))
     button3.place(relx=0.75,rely=0.1)
-    entry = customtkinter.CTkEntry(master=app, placeholder_text='Search', width=475, font=('Gill Sans MT', 15))
+    entry = customtkinter.CTkEntry(master=app, placeholder_text='Search', width=525, font=('Gill Sans MT', 15))
     entry.place(relx=0.2,rely=0.025)
 
     # Titles the league, team and player cards
     league_text = customtkinter.CTkLabel(master=app,text='League Ladder',font=('Gill Sans MT', 22))
-    league_text.place(relx=0.4,rely=0.21, anchor='w')
+    league_text.place(relx=0.375,rely=0.21, anchor='w')
     player_text = customtkinter.CTkLabel(master=app,text='Player Card',font=('Gill Sans MT', 22))
-    player_text.place(relx=0.245,rely=0.57)
+    player_text.place(x=175,rely=0.59)
     team_text = customtkinter.CTkLabel(master=app,text='Team Card',font=('Gill Sans MT', 22))
-    team_text.place(relx=0.655,rely=0.57)
+    team_text.place(x=450,rely=0.59)
 
     # Get the pictures from their respective directories and randomly select one to present
     picture_dir1 = r'Ladder Pictures'
@@ -122,11 +118,11 @@ def create_home():
     picture_path3 = os.path.join(pic_dir3, random_pic3)
 
     # Set the width and height of the home screen pictures
-    league_width = 650
+    league_width = 525
     league_height = int(league_width * 265/700)
-    player_width = 300
+    player_width = 250
     player_height = int(player_width * 200/300)
-    team_width = 350
+    team_width = 275
     team_height = int(team_width * 200/350)
 
     # Opens the pictures, resizes them and displays them in the home screen
@@ -134,19 +130,19 @@ def create_home():
     new_photo1 = league_image.resize((league_width, league_height))
     league_photo = ImageTk.PhotoImage(new_photo1)
     league_image_label = customtkinter.CTkLabel(app, image=league_photo, text='')
-    league_image_label.place(relx=0.6, rely=0.375, anchor='center')
+    league_image_label.place(relx=0.575, rely=0.4, anchor='center')
     league_image_label.image= league_photo
     player_image = Image.open(picture_path2)
     new_photo2 = player_image.resize((player_width, player_height))
     player_photo = ImageTk.PhotoImage(new_photo2)
     player_image_label = customtkinter.CTkLabel(app, image=player_photo, text='')
-    player_image_label.place(relx=0.375, rely=0.8, anchor='center')
+    player_image_label.place(relx=0.375, rely=0.825, anchor='center')
     player_image_label.image = player_photo
     team_image = Image.open(picture_path3)
     new_photo3 = team_image.resize((team_width, team_height))
     team_photo = ImageTk.PhotoImage(new_photo3)
     team_image_label = customtkinter.CTkLabel(app, image=team_photo, text='')
-    team_image_label.place(relx=0.785, rely=0.8, anchor='center')
+    team_image_label.place(relx=0.785, rely=0.825, anchor='center')
     team_image_label.image = team_photo
 
     # Configures the card titles so that they are displaying the team, league and player names
@@ -156,13 +152,21 @@ def create_home():
 
 create_home()
 
-# code used to create and display team statistics
+# Code used to create and display team statistics
 def create_teams():
-    tl3 = tk.Tk()
-    tl3.geometry("900x600")
+    tl3 = customtkinter.CTk()
+    tl3.geometry("900x700")
+    tl3.resizable(True,False)
     tl3.title("Teams")
-    tl3.resizable(False, False)
-    tl3.configure(bg="dimgrey")
+
+    style = ttk.Style(tl3)
+    style.configure("Treeview", background="#242424", foreground="white")
+
+    title = customtkinter.CTkLabel(tl3, text='Team Statistics',font=('Gill Sans MT', 30))
+    title.place(relx=0.5, rely=0.05, anchor='center')
+
+    frame = customtkinter.CTkScrollableFrame(tl3,height=550,width=900,orientation='horizontal',fg_color='transparent')
+    frame.place(rely=0.1)
 
     # Get the team statistics from the fbref module
     fbref = sd.FBref(leagues=['ENG-Premier League'], seasons=['2223'])
@@ -170,16 +174,16 @@ def create_teams():
     df = pd.DataFrame(team_stats)
 
     # Remove unwanted columns and add teams column to the table
-    df = df.drop(columns=['Per 90 Minutes', 'Progression', 'url'])
+    df = df.drop(columns=['Per 90 Minutes', 'Progression', 'url','Playing Time'])
     teams = ['Arsenal', 'Aston Villa', 'Bournemouth', 'Brentford', 'Brighton', 
              'Chelsea', 'Crystal Palace', 'Everton', 'Fulham', 'Leeds United', 
              'Leicester City', 'Liverpool', 'Manchester City', 'Manchester Utd', 
              'Newcastle Utd', "Nott'ham Forest", 'Southampton', 'Tottenham', 
              'West Ham', 'Wolves']
     df.insert(0, 'Team', teams)
-
+    
     # Create Treeview widget
-    tree = ttk.Treeview(tl3, style="Treeview")
+    tree = ttk.Treeview(frame)
     tree["columns"] = df.columns.tolist()
     tree["show"] = "headings"
 
@@ -191,15 +195,10 @@ def create_teams():
     for index, row in df.iterrows():
         tree.insert("", "end", values=tuple(row))
 
-    # Add scrollbar
-    xscrollbar = ttk.Scrollbar(tl3, orient='horizontal', command=tree.xview)
-    tree.configure(xscroll=xscrollbar.set)
-    xscrollbar.pack(side='bottom', fill="x")
-
     # Add the treeview to the window
-    tree.pack(expand=True, fill="both",pady=(75,0))
+    tree.pack(expand=True, fill="both",pady=(100,0))
 
-    menu_button = tk.Button(master=tl3, text='Menu', height=1, width=7, command=lambda: main_menu(tl3), font=('Gill Sans MT', 15),bg='steelblue',fg='white',)
+    menu_button = customtkinter.CTkButton(master=tl3, text='Menu', width=100, command=lambda: main_menu(tl3), font=('Gill Sans MT', 15))
     menu_button.place(relx=0.5, rely=0.925, anchor='center')
 
     tl3.mainloop()
