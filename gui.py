@@ -16,9 +16,9 @@ app.title("Football Database App")
 app.resizable(False,False)
 
 # Set the appearance mode for default color theme
-customtkinter.set_appearance_mode('dark')
+customtkinter.set_appearance_mode('light')
 customtkinter.set_default_color_theme('blue')
-current_theme = 'Dark'
+current_theme = 'Light'
 
 # All the code used to open the different pages
 def open_leagues():
@@ -159,31 +159,16 @@ def create_teams():
     tl3.resizable(True,False)
     tl3.title("Teams")
 
-    style = ttk.Style(tl3)
-    style.configure("Treeview", background="#242424", foreground="white")
+    fbref = sd.FBref()
 
     title = customtkinter.CTkLabel(tl3, text='Team Statistics',font=('Gill Sans MT', 30))
     title.place(relx=0.5, rely=0.05, anchor='center')
 
-    frame = customtkinter.CTkScrollableFrame(tl3,height=550,width=900,orientation='horizontal',fg_color='transparent')
-    frame.place(rely=0.1)
-
-    # Get the team statistics from the fbref module
-    fbref = sd.FBref(leagues=['ENG-Premier League'], seasons=['2223'])
-    team_stats = fbref.read_team_season_stats(stat_type='standard')
-    df = pd.DataFrame(team_stats)
-
-    # Remove unwanted columns and add teams column to the table
-    df = df.drop(columns=['Per 90 Minutes', 'Progression', 'url','Playing Time'])
-    teams = ['Arsenal', 'Aston Villa', 'Bournemouth', 'Brentford', 'Brighton', 
-             'Chelsea', 'Crystal Palace', 'Everton', 'Fulham', 'Leeds United', 
-             'Leicester City', 'Liverpool', 'Manchester City', 'Manchester Utd', 
-             'Newcastle Utd', "Nott'ham Forest", 'Southampton', 'Tottenham', 
-             'West Ham', 'Wolves']
-    df.insert(0, 'Team', teams)
+    frame = customtkinter.CTkScrollableFrame(tl3,height=450,width=900,orientation='horizontal', fg_color='transparent')
+    frame.place(rely=0.25)
     
     # Create Treeview widget
-    tree = ttk.Treeview(frame)
+    tree = ttk.Treeview(frame, style= 'Treeview')
     tree["columns"] = df.columns.tolist()
     tree["show"] = "headings"
 
@@ -196,10 +181,69 @@ def create_teams():
         tree.insert("", "end", values=tuple(row))
 
     # Add the treeview to the window
-    tree.pack(expand=True, fill="both",pady=(100,0))
+    tree.pack(expand=True, fill="both")
+
+    league_label = customtkinter.CTkLabel(tl3,text='League',font=('Gill Sans MT', 25))
+    league_label.place(relx=0.25, rely=0.11, anchor='center')
+    season_label = customtkinter.CTkLabel(tl3,text='Season',font=('Gill Sans MT', 25))
+    season_label.place(relx=0.75, rely=0.11, anchor='center')
+    stat_type_label = customtkinter.CTkLabel(tl3,text='Stat Type',font=('Gill Sans MT', 25))
+    stat_type_label.place(relx=0.5, rely=0.11, anchor='center')
+
+    '''league_option = customtkinter.CTkOptionMenu(tl3, width = 150, height=50, values=league_options,font=('Gill Sans MT', 15))
+    league_option.place(relx=0.25, rely=0.175, anchor='center')
+    season_option = customtkinter.CTkOptionMenu(tl3, width=150,height=50,values=season_options,font=('Gill Sans MT', 15))
+    season_option.place(relx=0.75,rely=0.175,anchor='center')
+    stat_type_option = customtkinter.CTkOptionMenu(tl3, width=150,height=50,values=stat_type_options,font=('Gill Sans MT', 15))
+    stat_type_option.place(relx=0.5,rely=0.175,anchor='center')'''
+    
+    def update_data():
+        nonlocal df
+        league_option = league_var.get()
+        season_option = season_var.get()
+        stat_type_option = stat_type_var.get()
+
+    if league_options == 'ENG-Premier League' and season_options == '2022-2023' and stat_type_options == 'standard':
+            df = fbref.read_team_season_stats(league=league_options, season=season_options, stat_type=stat_type_options)
+    elif league_options == 'ENG-Premier League' and season_options == '2022-2023' and stat_type_options == 'keeper':
+            df = fbref.read_team_season_stats(league=league_options, season=season_options, stat_type=stat_type_options)
+    elif league_options == 'ENG-Premier League' and season_options == '2022-2023' and stat_type_options == 'shooting':
+            df = fbref.read_team_season_stats(league=league_options, season=season_options, stat_type=stat_type_options)
+    elif league_options == 'ENG-Premier League' and season_options == '2022-2023' and stat_type_options == 'passing':
+            df = fbref.read_team_season_stats(league=league_options, season=season_options, stat_type=stat_type_options)
+    elif league_options == 'ENG-Premier League' and season_options == '2022-2023' and stat_type_options == 'defense':
+            df = fbref.read_team_season_stats(league=league_options, season=season_options, stat_type=stat_type_options)
+    elif league_options == 'ENG-Premier League' and season_options == '2022-2023' and stat_type_options == 'misc':
+            df = fbref.read_team_season_stats(league=league_options, season=season_options, stat_type=stat_type_options)
+
+    tree.delete(*tree.get_children())
+    for index, row in df.iterrows():
+        tree.insert("", "end", values=tuple(row))
+    
+    league_options = ['ENG-Premier League']
+    league_var = StringVar(tl3)
+    league_var.set(league_options[0])
+    league_menu = OptionMenu(tl3, league_var, *league_options)
+    league_menu.place(relx=0.25, rely=0.1, anchor='center')
+
+    season_options = ['2022-2023']
+    season_var = StringVar(tl3)
+    season_var.set(season_options[0])
+    season_menu = OptionMenu(tl3, season_var, *season_options)
+    season_menu.place(relx=0.5, rely=0.1, anchor='center')
+
+    stat_type_options = ['standard', 'keeper', 'shooting', 'passing', 'defense', 'misc']
+    stat_type_var = StringVar(tl3)
+    stat_type_var.set(stat_type_options[0])
+    stat_type_menu = OptionMenu(tl3, stat_type_var, *stat_type_options)
+    stat_type_menu.place(relx=0.75, rely=0.1, anchor='center')
+
+    league_var.trace('w', update_data)
+    season_var.trace('w', update_data)
+    stat_type_var.trace('w', update_data)
 
     menu_button = customtkinter.CTkButton(master=tl3, text='Menu', width=100, command=lambda: main_menu(tl3), font=('Gill Sans MT', 15))
-    menu_button.place(relx=0.5, rely=0.925, anchor='center')
+    menu_button.place(relx=0.5, rely=0.95, anchor='center')
 
     tl3.mainloop()
 
@@ -261,7 +305,7 @@ def create_about():
     label.place(relx=0.425,rely=0.01)
 
     # Opens up the about text file and displays it in a textbox
-    textbox = customtkinter.CTkTextbox(master=tl8, width=475, height=450, font =('Gill Sans MT', 15))
+    textbox = customtkinter.CTkTextbox(master=tl8, width=485, height=450, font =('Gill Sans MT', 15))
     textbox.place(relx=0.025,rely=0.1)
     with open (r'about.txt') as file:
         data = file.read()
