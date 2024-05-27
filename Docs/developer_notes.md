@@ -15,3 +15,18 @@
 
 ## To Dos
 * Find a better way to import massive amounts of data only once so that there isn't a massive wait time everytime the app opens as it is loading in all the data every time when there is already data there.
+
+* Import and display all the data under their respective headings in a nice format.
+
+* Get the search bar working and displaying kewwords and stats based on string queries.
+
+* Get buttons under the pictures so that users can click on the pictures and they display the stats based upon the league, team or player.
+
+* Add tools and more things to settings to make the app more complete
+
+* Make a terms and services that pops up once and never again once someone has read it and agreed to it.
+
+## Completed To Dos
+* Finished the Gui and all the pictures that are displayed in the gui and fixed a problem with the display of the pictures.
+
+* Found the best method to display the data in a way I like and a way that looks the best to me.
