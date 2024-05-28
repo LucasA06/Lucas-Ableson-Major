@@ -1,9 +1,61 @@
 import soccerdata as sd
 import pandas as pd
 import os
-import pickle
 
-if not os.path.exists('data'):
+def create_directories():
+    base_path = 'data/Team/Preimer League'
+    seasons = ['23-24', '22-23', '21-22', '20-21', '19-20', '18-19']
+    stat_types = ['Standard', 'Keeper', 'Shooting', 'Passing', 'Defense', 'Misc']
+
+    for season in seasons:
+        for stat_type in stat_types:
+            dir_path = os.path.join(base_path, f"{season}", stat_type)
+            os.makedirs(dir_path, exist_ok=True)
+
+def fetch_and_process_data(leagues, seasons, stat_type):
+    all_data = []
+
+    for season in seasons:
+        fbref = sd.FBref(leagues=leagues, seasons=[season])
+        data = fbref.read_team_season_stats(stat_type=stat_type.lower())
+
+        # Columns to keep
+        columns_to_keep = [col for col in data.columns if col not in ['Per 90 Minutes', 'Progression', 'url']]
+
+        # Select only the columns to keep
+        data = data[columns_to_keep]
+
+        # Insert team names
+        data.insert(0, 'Team', [
+            'Arsenal', 'Aston Villa', 'Bournemouth', 'Brentford', 'Brighton',
+            'Chelsea', 'Crystal Palace', 'Everton', 'Fulham', 'Leeds United',
+            'Leicester City', 'Liverpool', 'Manchester City', 'Manchester Utd',
+            'Newcastle Utd', "Nott'ham Forest", 'Southampton', 'Tottenham',
+            'West Ham', 'Wolves'
+        ])
+        all_data.append((season, pd.DataFrame(data)))
+    
+    return all_data
+
+def save_data_to_csv(data, stat_type):
+    base_path = 'data/Team/Preimer League'
+    for season, df in data:
+        dir_path = os.path.join(base_path, f"{season}", stat_type)
+        file_path = os.path.join(dir_path, f'{stat_type.lower()}.csv')
+        df.to_csv(file_path, index=False)
+
+if __name__ == "__main__":
+    create_directories()
+
+    leagues = ['ENG-Premier League']
+    seasons = ['23-24', '22-23', '21-22', '20-21', '19-20', '18-19']
+    stat_types = ['Standard', 'Keeper', 'Shooting', 'Passing', 'Defense', 'Misc']
+
+    for stat_type in stat_types:
+        data = fetch_and_process_data(leagues, seasons, stat_type)
+        save_data_to_csv(data, stat_type)
+
+'''if not os.path.exists('data'):
     os.makedirs('data\Team\#2024-2023\Standard')
     os.makedirs('data\Team\#2023-2022\Standard')
     os.makedirs('data\Team\#2022-2021\Standard')
@@ -41,9 +93,7 @@ if not os.path.exists('data'):
     os.makedirs('data\Team\#2020-2019\Miscellaneous')
     os.makedirs('data\Team\#2019-2018\Miscellaneous')
 else:
-    print('data file already exists')
-
-    
+    print('Data file already exists')
 
 # Standard League Statistics
 fbref = sd.FBref(leagues=['ENG-Premier League'], seasons=['2324'])
@@ -231,82 +281,75 @@ fbref32_data = convert_to_dataframe(fbref32_data)
 fbref33_data = convert_to_dataframe(fbref33_data)
 fbref34_data = convert_to_dataframe(fbref34_data)
 
-def write_stats():
-    with open('data\Team\#2023-2024\Standard', 'wb') as f:
-        fbref_data.to_csv()
-    with open('data\Team\#2022-2023\Standard') as f:
-        fbref0_data.to_csv()
-    with open('data\Team\#2021-2022\Standard', 'wb') as f:
-        fbref1_data.to_csv()
-    with open('data\Team\#2020-2021\Standard') as f:
-        fbref2_data.to_csv()
-    with open('data\Team\#2019-2020\Standard') as f:
-        fbref3_data.to_csv()
-    with open('data\Team\#2018-2019\Standard') as f:
-        fbref4_data.to_csv()
-
-    with open('data\Team\#2023-2024\Keeper', 'wb') as f:
-        fbref5_data.to_csv()
-    with open('data\Team\#2022-2023\Keeper') as f:
-        fbref6_data.to_csv()
-    with open('data\Team\#2021-2022\Keeper') as f:
-        fbref7_data.to_csv()
-    with open('data\Team\#2020-2021\Keeper') as f:
-        fbref8_data.to_csv()
-    with open('data\Team\#2019-2020\Keeper') as f:
-        fbref9_data.to_csv()
-    with open('data\Team\#2018-2019\Keeper') as f:
-        fbref10_data.to_csv()
-
-    with open('data\Team\#2023-2024\Shooting', 'wb') as f:
-        fbref11_data.to_csv()
-    with open('data\Team\#2022-2023\Shooting') as f:
-        fbref12_data.to_csv()
-    with open('data\Team\#2021-2022\Shooting') as f:
-        fbref13_data.to_csv()
-    with open('data\Team\#2020-2021\Shooting') as f:
-        fbref14_data.to_csv()
-    with open('data\Team\#2019-2020\Shooting') as f:
-        fbref15_data.to_csv()
-    with open('data\Team\#2018-2019\Shooting') as f:
-        fbref16_data.to_csv()
-
-    with open('data\Team\#2023-2024\Passing', 'wb') as f:
-        fbref17_data.to_csv()
-    with open('data\Team\#2022-2023\Passing') as f:
-        fbref18_data.to_csv()
-    with open('data\Team\#2021-2022\Passing') as f:
-        fbref19_data.to_csv()
-    with open('data\Team\#2020-2021\Passing') as f:
-        fbref20_data.to_csv()
-    with open('data\Team\#2019-2020\Passing') as f:
-        fbref21_data.to_csv()
-    with open('data\Team\#2018-2019\Passing') as f:
-        fbref22_data.to_csv()
-
-    with open('data\Team\#2023-2024\Defense', 'wb') as f:
-        fbref23_data.to_csv()
-    with open('data\Team\#2022-2023\Defense') as f:
-        fbref24_data.to_csv()
-    with open('data\Team\#2021-2022\Defense') as f:
-        fbref25_data.to_csv()
-    with open('data\Team\#2020-2021\Defense') as f:
-        fbref26_data.to_csv()
-    with open('data\Team\#2019-2020\Defense') as f:
-        fbref27_data.to_csv()
-    with open('data\Team\#2018-2019\Defense') as f:
-        fbref28_data.to_csv()
-
-    with open('data\Team\#2023-2024\Misc', 'wb') as f:
-        fbref29_data.to_csv()
-    with open('data\Team\#2022-2023\Misc') as f:
-        fbref30_data.to_csv()
-    with open('data\Team\#2021-2022\Misc') as f:
-        fbref31_data.to_csv()
-    with open('data\Team\#2020-2021\Misc') as f:
-        fbref32_data.to_csv()
-    with open('data\Team\#2019-2020\Misc') as f:
-        fbref33_data.to_csv()
-    with open('data\Team\#2018-2019\Misc') as f:
-        fbref34_data.to_csv()
-write_stats()
+with open('data\Team\#2023-2024\Standard'):
+    fbref_data.to_csv()
+with open('data\Team\#2022-2023\Standard'):
+    fbref0_data.to_csv()
+with open('data\Team\#2021-2022\Standard'):
+    fbref1_data.to_csv()
+with open('data\Team\#2020-2021\Standard'):
+    fbref2_data.to_csv()
+with open('data\Team\#2019-2020\Standard'):
+    fbref3_data.to_csv()
+with open('data\Team\#2018-2019\Standard'):
+    fbref4_data.to_csv()
+with open('data\Team\#2023-2024\Keeper'):
+    fbref5_data.to_csv()
+with open('data\Team\#2022-2023\Keeper'):
+    fbref6_data.to_csv()
+with open('data\Team\#2021-2022\Keeper'):
+    fbref7_data.to_csv()
+with open('data\Team\#2020-2021\Keeper'):
+    fbref8_data.to_csv()
+with open('data\Team\#2019-2020\Keeper'):
+    fbref9_data.to_csv()
+with open('data\Team\#2018-2019\Keeper'):
+    fbref10_data.to_csv()
+with open('data\Team\#2023-2024\Shooting'):
+    fbref11_data.to_csv()
+with open('data\Team\#2022-2023\Shooting'):
+    fbref12_data.to_csv()
+with open('data\Team\#2021-2022\Shooting'):
+    fbref13_data.to_csv()
+with open('data\Team\#2020-2021\Shooting'):
+    fbref14_data.to_csv()
+with open('data\Team\#2019-2020\Shooting'):
+    fbref15_data.to_csv()
+with open('data\Team\#2018-2019\Shooting'):
+    fbref16_data.to_csv()
+with open('data\Team\#2023-2024\Passing'):
+    fbref17_data.to_csv()
+with open('data\Team\#2022-2023\Passing'):
+    fbref18_data.to_csv()
+with open('data\Team\#2021-2022\Passing'):
+    fbref19_data.to_csv()
+with open('data\Team\#2020-2021\Passing'):
+    fbref20_data.to_csv()
+with open('data\Team\#2019-2020\Passing'):
+    fbref21_data.to_csv()
+with open('data\Team\#2018-2019\Passing'):
+    fbref22_data.to_csv()
+with open('data\Team\#2023-2024\Defense'):
+    fbref23_data.to_csv()
+with open('data\Team\#2022-2023\Defense'):
+    fbref24_data.to_csv()
+with open('data\Team\#2021-2022\Defense'):
+    fbref25_data.to_csv()
+with open('data\Team\#2020-2021\Defense'):
+    fbref26_data.to_csv()
+with open('data\Team\#2019-2020\Defense'):
+    fbref27_data.to_csv()
+with open('data\Team\#2018-2019\Defense'):
+    fbref28_data.to_csv()
+with open('data\Team\#2023-2024\Misc'):
+    fbref29_data.to_csv()
+with open('data\Team\#2022-2023\Misc'):
+    fbref30_data.to_csv()
+with open('data\Team\#2021-2022\Misc'):
+    fbref31_data.to_csv()
+with open('data\Team\#2020-2021\Misc'):
+    fbref32_data.to_csv()
+with open('data\Team\#2019-2020\Misc'):
+    fbref33_data.to_csv()
+with open('data\Team\#2018-2019\Misc'):
+    fbref34_data.to_csv()'''
