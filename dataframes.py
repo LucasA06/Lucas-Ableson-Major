@@ -19,11 +19,11 @@ def fetch_and_process_data(leagues, seasons, stat_type):
         fbref = sd.FBref(leagues=leagues, seasons=[season])
         data = fbref.read_team_season_stats(stat_type=stat_type.lower())
 
-        # Columns to keep
-        columns_to_keep = [col for col in data.columns if col not in ['Per 90 Minutes', 'Progression', 'url']]
+        # Columns to drop
+        columns_to_drop = ['Per 90 Minutes', 'Progression', 'url','Playing Time']
 
-        # Select only the columns to keep
-        data = data[columns_to_keep]
+        # Drop specified columns
+        data.drop(columns=columns_to_drop, inplace=True, errors='ignore')
 
         # Insert team names
         data.insert(0, 'Team', [
@@ -37,12 +37,12 @@ def fetch_and_process_data(leagues, seasons, stat_type):
     
     return all_data
 
-def save_data_to_csv(data, stat_type):
+def save_data_to_pickle(data, stat_type):
     base_path = 'data/Team/Preimer League'
     for season, df in data:
         dir_path = os.path.join(base_path, f"{season}", stat_type)
-        file_path = os.path.join(dir_path, f'{stat_type.lower()}.csv')
-        df.to_csv(file_path, index=False)
+        file_path = os.path.join(dir_path, f'{stat_type.lower()}.pkl')
+        df.to_pickle(file_path)
 
 if __name__ == "__main__":
     create_directories()
@@ -53,8 +53,8 @@ if __name__ == "__main__":
 
     for stat_type in stat_types:
         data = fetch_and_process_data(leagues, seasons, stat_type)
-        save_data_to_csv(data, stat_type)
-
+        save_data_to_pickle(data, stat_type)
+        
 '''if not os.path.exists('data'):
     os.makedirs('data\Team\#2024-2023\Standard')
     os.makedirs('data\Team\#2023-2022\Standard')

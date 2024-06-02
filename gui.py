@@ -152,56 +152,41 @@ def create_home():
 
 create_home()
 
-league_options = ['ENG-Premier League']
+league_options = ['Premier League']
 season_options = ['23-24', '22-23', '21-22', '20-21', '19-20', '18-19']
-stat_type_options = ['Standard', 'Keeper', 'Shooting', 'Passing', 'Defense', 'Miscellaneous']
+stat_type_options = ['Standard', 'Keeper', 'Shooting', 'Passing', 'Defense', 'Misc']
 
-def load_data(league, season, stat_type):
-    # Construct the file path
-    base_path = 'data\Team\Preimer League'
-    season = season
-    file_path = os.path.join(base_path, f"{season}", stat_type, f"{stat_type.lower()}.csv")
-    
-    # Load the data if the file exists
+'''def load_data(league, season, stat_type):
+    file_path = f"data/teams/{league}/{season}/{stat_type}.pkl"
     if os.path.exists(file_path):
-        df = pd.read_csv(file_path)
+        return pd.read_pickle(file_path)
     else:
-        df = pd.DataFrame()  # Return an empty DataFrame if file doesn't exist
-    return df
+        return pd.DataFrame()
 
-def update_treeview(tree, league, season, stat_type):
-    # Load the new data
+def update_table(table, df):
+    table.delete(*table.get_children())
+    table['column'] = list(df.columns)
+    table['show'] = 'headings'
+    for column in table['columns']:
+        table.heading(column, text=column)
+    for _, row in df.iterrows():
+        table.insert("", "end", values=list(row))
+
+def on_option_change(league_var, season_var, stat_type_var, table):
+    league = league_var.get()
+    season = season_var.get()
+    stat_type = stat_type_var.get()
     df = load_data(league, season, stat_type)
-    
-    # Clear the current data in the Treeview
-    tree.delete(*tree.get_children())
-    
-    # Update the Treeview columns
-    tree["columns"] = df.columns.tolist()
-    tree["show"] = "headings"
-    for column in df.columns:
-        tree.heading(column, text=column)
-        tree.column(column, anchor='center')
-    
-    # Insert the new data into the Treeview
-    for index, row in df.iterrows():
-        tree.insert("", "end", values=tuple(row))
+    update_table(table, df)
 
 def create_teams():
     tl3 = customtkinter.CTk()
     tl3.geometry("900x700")
-    tl3.resizable(True, False)
+    tl3.resizable(False, False)
     tl3.title("Teams")
 
     title = customtkinter.CTkLabel(tl3, text='Team Statistics', font=('Gill Sans MT', 30))
     title.place(relx=0.5, rely=0.05, anchor='center')
-
-    frame = customtkinter.CTkScrollableFrame(tl3, height=450, width=900, orientation='horizontal', fg_color='transparent')
-    frame.place(rely=0.25)
-    
-    # Create Treeview widget
-    tree = ttk.Treeview(frame)
-    tree.pack(expand=True, fill="both")
 
     league_label = customtkinter.CTkLabel(tl3, text='League', font=('Gill Sans MT', 25))
     league_label.place(relx=0.25, rely=0.11, anchor='center')
@@ -210,40 +195,38 @@ def create_teams():
     stat_type_label = customtkinter.CTkLabel(tl3, text='Stat Type', font=('Gill Sans MT', 25))
     stat_type_label.place(relx=0.5, rely=0.11, anchor='center')
 
-    # Define callback functions for OptionMenus
-    def on_option_change(*args):
-        league = league_option.get()
-        season = season_option.get()
-        stat_type = stat_type_option.get()
-        update_treeview(tree, league, season, stat_type)
+    league_var = customtkinter.StringVar(value=league_options[0])
+    season_var = customtkinter.StringVar(value=season_options[0])
+    stat_type_var = customtkinter.StringVar(value=stat_type_options[0])
 
-    league_option = customtkinter.CTkOptionMenu(tl3, width=150, height=50, values=league_options, font=('Gill Sans MT', 15))
+    league_option = customtkinter.CTkOptionMenu(tl3, width=150, height=50, variable=league_var, values=league_options, font=('Gill Sans MT', 15))
     league_option.place(relx=0.25, rely=0.175, anchor='center')
-    league_option.set(league_options[0])
     
-    season_option = customtkinter.CTkOptionMenu(tl3, width=150, height=50, values=season_options, font=('Gill Sans MT', 15))
+    season_option = customtkinter.CTkOptionMenu(tl3, width=150, height=50, variable=season_var, values=season_options, font=('Gill Sans MT', 15))
     season_option.place(relx=0.75, rely=0.175, anchor='center')
-    season_option.set(season_options[0])
     
-    stat_type_option = customtkinter.CTkOptionMenu(tl3, width=150, height=50, values=stat_type_options, font=('Gill Sans MT', 15))
+    stat_type_option = customtkinter.CTkOptionMenu(tl3, width=150, height=50, variable=stat_type_var, values=stat_type_options, font=('Gill Sans MT', 15))
     stat_type_option.place(relx=0.5, rely=0.175, anchor='center')
-    stat_type_option.set(stat_type_options[0])
-
-    # Bind the callback functions
-    league_option.bind("<<OptionMenuSelected>>", on_option_change)
-    season_option.bind("<<OptionMenuSelected>>", on_option_change)
-    stat_type_option.bind("<<OptionMenuSelected>>", on_option_change)
-
-    # Initial load of data
-    on_option_change()
+    
+    table_frame = customtkinter.CTkFrame(tl3, width=800, height=500)
+    table_frame.place(relx=0.5, rely=0.55, anchor='center')
+    table = ttk.Treeview(table_frame)
+    table.pack(expand=True, fill='both')
 
     menu_button = customtkinter.CTkButton(master=tl3, text='Menu', width=100, command=lambda: main_menu(tl3), font=('Gill Sans MT', 15))
     menu_button.place(relx=0.5, rely=0.95, anchor='center')
 
-    tl3.mainloop()
+    league_var.trace_add('write', lambda *args: on_option_change(league_var, season_var, stat_type_var, table))
+    season_var.trace_add('write', lambda *args: on_option_change(league_var, season_var, stat_type_var, table))
+    stat_type_var.trace_add('write', lambda *args: on_option_change(league_var, season_var, stat_type_var, table))
+
+    initial_df = load_data(league_options[0], season_options[0], stat_type_options[0])
+    update_table(table, initial_df)
+
+    tl3.mainloop()'''
 
 # Code used to create and display team statistics
-'''def create_teams():
+def create_teams():
     tl3 = customtkinter.CTk()
     tl3.geometry("900x700")
     tl3.resizable(True,False)
@@ -254,6 +237,8 @@ def create_teams():
 
     frame = customtkinter.CTkScrollableFrame(tl3,height=450,width=900,orientation='horizontal', fg_color='transparent')
     frame.place(rely=0.25)
+
+    df = pd.read_pickle(r'data\Team\Preimer League\23-24\Standard\standard.pkl')
     
     # Create Treeview widget
     tree = ttk.Treeview(frame, style= 'Treeview')
@@ -288,7 +273,7 @@ def create_teams():
     menu_button = customtkinter.CTkButton(master=tl3, text='Menu', width=100, command=lambda: main_menu(tl3), font=('Gill Sans MT', 15))
     menu_button.place(relx=0.5, rely=0.95, anchor='center')
 
-    tl3.mainloop()'''
+    tl3.mainloop()
 
 def create_players():
     tl8 = customtkinter.CTk()
@@ -326,14 +311,6 @@ def create_leagues():
     tl4.title("League Statistics")
     tl4.resizable(False, False)
 
-    fbref = sd.FBref(leagues = ['ENG-Premier League'], seasons = ['2223'])
-    season_stats = fbref.read_team_season_stats(stat_type='')
-    league_frame = customtkinter.CTkFrame(master=tl4, width=490, height=500, corner_radius=0)
-    league_frame.place(relx=0.01, rely=0.075)
-
-    table_text = customtkinter.CTkTextbox(master=league_frame, font=('Gill Sans MT', 12),width=480, height = 490)
-    table_text.place(relx=0.01, rely=0.01)
-    table_text.insert('1.0', season_stats)
 
     tl4.mainloop()
 
