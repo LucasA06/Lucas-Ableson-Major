@@ -1,7 +1,7 @@
 # Import required libaries
 from tkinter import *
 from tkinter import ttk
-import customtkinter
+import customtkinter as ctk
 import soccerdata as sd
 import pandas as pd
 from PIL import ImageTk, Image
@@ -10,14 +10,14 @@ import random
 from CTkTable import *
 
 # Create the main app window
-app = customtkinter.CTk()
+app = ctk.CTk()
 app.geometry("675x700")
 app.title("Football Database App")
 app.resizable(False,False)
 
 # Set the appearance mode for default color theme
-customtkinter.set_appearance_mode('light')
-customtkinter.set_default_color_theme('blue')
+ctk.set_appearance_mode('light')
+ctk.set_default_color_theme('blue')
 current_theme = 'Light'
 
 # All the code used to open the different pages
@@ -60,47 +60,47 @@ def open_rankings():
 # All the code used to create the home gui page
 def create_home():
     # Creates a grid to easily place the buttons in the sidebar frame
-    sidebar = customtkinter.CTkFrame(master=app,width=1,height=700,corner_radius=0)
+    sidebar = ctk.CTkFrame(master=app,width=1,height=700,corner_radius=0)
     sidebar.grid()
-    sidebar_button1 = customtkinter.CTkButton(sidebar,width=100,text='Rankings',command=open_rankings, font=('Gill Sans MT', 15))
+    sidebar_button1 = ctk.CTkButton(sidebar,width=100,text='Rankings',command=open_rankings, font=('Gill Sans MT', 15))
     sidebar_button1.grid(row=1, column=0,padx=5,pady=5)
-    sidebar_button2 = customtkinter.CTkButton(sidebar,width=100,text='Teams',command=open_teams, font=('Gill Sans MT', 15))
+    sidebar_button2 = ctk.CTkButton(sidebar,width=100,text='Teams',command=open_teams, font=('Gill Sans MT', 15))
     sidebar_button2.grid(row=2, column=0,padx=5,pady=5)
-    sidebar_button3 = customtkinter.CTkButton(sidebar,width=100,text='Players',command=open_players, font=('Gill Sans MT', 15))
+    sidebar_button3 = ctk.CTkButton(sidebar,width=100,text='Players',command=open_players, font=('Gill Sans MT', 15))
     sidebar_button3.grid(row=3, column=0,padx=5,pady=5)
-    sidebar_button4 = customtkinter.CTkButton(sidebar,width=100,text='Leagues',command=open_leagues, font=('Gill Sans MT', 15))
+    sidebar_button4 = ctk.CTkButton(sidebar,width=100,text='Leagues',command=open_leagues, font=('Gill Sans MT', 15))
     sidebar_button4.grid(row=4, column=0,padx=5,pady=5)
-    sidebar_button6 = customtkinter.CTkButton(sidebar,width=100,text='Favourites',command=open_favs, font=('Gill Sans MT', 15))
+    sidebar_button6 = ctk.CTkButton(sidebar,width=100,text='Favourites',command=open_favs, font=('Gill Sans MT', 15))
     sidebar_button6.grid(row=5, column=0,padx=5,pady=5)
-    sidebar_button7 = customtkinter.CTkButton(sidebar,width=100,text='Years',command=open_years, font=('Gill Sans MT', 15))
+    sidebar_button7 = ctk.CTkButton(sidebar,width=100,text='Years',command=open_years, font=('Gill Sans MT', 15))
     sidebar_button7.grid(row=6, column=0,padx=5,pady=5)
-    sidebar_button11 = customtkinter.CTkButton(sidebar,width=100,text='',fg_color='',hover=False)
+    sidebar_button11 = ctk.CTkButton(sidebar,width=100,text='',fg_color='',hover=False)
     sidebar_button11.grid(row=9, column=0,padx=5,pady=145)
-    sidebar_button8 = customtkinter.CTkButton(sidebar,width=100,text='Tools',command=open_tools, font=('Gill Sans MT', 15))
+    sidebar_button8 = ctk.CTkButton(sidebar,width=100,text='Tools',command=open_tools, font=('Gill Sans MT', 15))
     sidebar_button8.grid(row=8, column=0,padx=5,pady=5)
-    sidebar_button9 = customtkinter.CTkButton(sidebar,width=100,text='About',command=open_about, font=('Gill Sans MT', 15))
+    sidebar_button9 = ctk.CTkButton(sidebar,width=100,text='About',command=open_about, font=('Gill Sans MT', 15))
     sidebar_button9.grid(row=10, column=0,padx=5,pady=5)
-    sidebar_button10 = customtkinter.CTkButton(sidebar,width=100,text='Settings',command=open_settings, font=('Gill Sans MT', 15))
+    sidebar_button10 = ctk.CTkButton(sidebar,width=100,text='Settings',command=open_settings, font=('Gill Sans MT', 15))
     sidebar_button10.grid(row=11, column=0,padx=5,pady=5)
-    exit_button = customtkinter.CTkButton(sidebar,width=100,text='Exit',command=app.withdraw, fg_color='red', font=('Gill Sans MT', 15))
+    exit_button = ctk.CTkButton(sidebar,width=100,text='Exit',command=app.withdraw, fg_color='red', font=('Gill Sans MT', 15))
     exit_button.grid(row=12, column=0,padx=5,pady=5)
 
     # Create the buttons for the home screen
-    button1 = customtkinter.CTkButton(master=app, text="Leagues", command=open_leagues, font=('Gill Sans MT', 15))
+    button1 = ctk.CTkButton(master=app, text="Leagues", command=open_leagues, font=('Gill Sans MT', 15))
     button1.place(relx=0.2, rely=0.1)
-    button2 =customtkinter.CTkButton(master=app,text='Players',command=open_players, font=('Gill Sans MT', 15))
+    button2 =ctk.CTkButton(master=app,text='Players',command=open_players, font=('Gill Sans MT', 15))
     button2.place(relx=0.475,rely=0.1)
-    button3 =customtkinter.CTkButton(master=app,text='Teams',command=open_teams, font=('Gill Sans MT', 15))
+    button3 =ctk.CTkButton(master=app,text='Teams',command=open_teams, font=('Gill Sans MT', 15))
     button3.place(relx=0.75,rely=0.1)
-    entry = customtkinter.CTkEntry(master=app, placeholder_text='Search', width=525, font=('Gill Sans MT', 15))
+    entry = ctk.CTkEntry(master=app, placeholder_text='Search', width=525, font=('Gill Sans MT', 15))
     entry.place(relx=0.2,rely=0.025)
 
     # Titles the league, team and player cards
-    league_text = customtkinter.CTkLabel(master=app,text='League Ladder',font=('Gill Sans MT', 22))
+    league_text = ctk.CTkLabel(master=app,text='League Ladder',font=('Gill Sans MT', 22))
     league_text.place(relx=0.375,rely=0.21, anchor='w')
-    player_text = customtkinter.CTkLabel(master=app,text='Player Card',font=('Gill Sans MT', 22))
+    player_text = ctk.CTkLabel(master=app,text='Player Card',font=('Gill Sans MT', 22))
     player_text.place(x=175,rely=0.59)
-    team_text = customtkinter.CTkLabel(master=app,text='Team Card',font=('Gill Sans MT', 22))
+    team_text = ctk.CTkLabel(master=app,text='Team Card',font=('Gill Sans MT', 22))
     team_text.place(x=450,rely=0.59)
 
     # Get the pictures from their respective directories and randomly select one to present
@@ -129,19 +129,19 @@ def create_home():
     league_image = Image.open(picture_path)
     new_photo1 = league_image.resize((league_width, league_height))
     league_photo = ImageTk.PhotoImage(new_photo1)
-    league_image_label = customtkinter.CTkLabel(app, image=league_photo, text='')
+    league_image_label = ctk.CTkLabel(app, image=league_photo, text='')
     league_image_label.place(relx=0.575, rely=0.4, anchor='center')
     league_image_label.image= league_photo
     player_image = Image.open(picture_path2)
     new_photo2 = player_image.resize((player_width, player_height))
     player_photo = ImageTk.PhotoImage(new_photo2)
-    player_image_label = customtkinter.CTkLabel(app, image=player_photo, text='')
+    player_image_label = ctk.CTkLabel(app, image=player_photo, text='')
     player_image_label.place(relx=0.375, rely=0.825, anchor='center')
     player_image_label.image = player_photo
     team_image = Image.open(picture_path3)
     new_photo3 = team_image.resize((team_width, team_height))
     team_photo = ImageTk.PhotoImage(new_photo3)
-    team_image_label = customtkinter.CTkLabel(app, image=team_photo, text='')
+    team_image_label = ctk.CTkLabel(app, image=team_photo, text='')
     team_image_label.place(relx=0.785, rely=0.825, anchor='center')
     team_image_label.image = team_photo
 
@@ -151,10 +151,6 @@ def create_home():
     team_text.configure(text=f'Team Card \n {os.path.splitext(os.path.basename(random_pic3))[0]}')
 
 create_home()
-
-league_options = ['Premier League']
-season_options = ['23-24', '22-23', '21-22', '20-21', '19-20', '18-19']
-stat_type_options = ['Standard', 'Keeper', 'Shooting', 'Passing', 'Defense', 'Misc']
 
 '''def load_data(league, season, stat_type):
     file_path = f"data/teams/{league}/{season}/{stat_type}.pkl"
@@ -180,40 +176,40 @@ def on_option_change(league_var, season_var, stat_type_var, table):
     update_table(table, df)
 
 def create_teams():
-    tl3 = customtkinter.CTk()
+    tl3 = ctk.CTk()
     tl3.geometry("900x700")
     tl3.resizable(False, False)
     tl3.title("Teams")
 
-    title = customtkinter.CTkLabel(tl3, text='Team Statistics', font=('Gill Sans MT', 30))
+    title = ctk.CTkLabel(tl3, text='Team Statistics', font=('Gill Sans MT', 30))
     title.place(relx=0.5, rely=0.05, anchor='center')
 
-    league_label = customtkinter.CTkLabel(tl3, text='League', font=('Gill Sans MT', 25))
+    league_label = ctk.CTkLabel(tl3, text='League', font=('Gill Sans MT', 25))
     league_label.place(relx=0.25, rely=0.11, anchor='center')
-    season_label = customtkinter.CTkLabel(tl3, text='Season', font=('Gill Sans MT', 25))
+    season_label = ctk.CTkLabel(tl3, text='Season', font=('Gill Sans MT', 25))
     season_label.place(relx=0.75, rely=0.11, anchor='center')
-    stat_type_label = customtkinter.CTkLabel(tl3, text='Stat Type', font=('Gill Sans MT', 25))
+    stat_type_label = ctk.CTkLabel(tl3, text='Stat Type', font=('Gill Sans MT', 25))
     stat_type_label.place(relx=0.5, rely=0.11, anchor='center')
 
-    league_var = customtkinter.StringVar(value=league_options[0])
-    season_var = customtkinter.StringVar(value=season_options[0])
-    stat_type_var = customtkinter.StringVar(value=stat_type_options[0])
+    league_var = ctk.StringVar(value=league_options[0])
+    season_var = ctk.StringVar(value=season_options[0])
+    stat_type_var = ctk.StringVar(value=stat_type_options[0])
 
-    league_option = customtkinter.CTkOptionMenu(tl3, width=150, height=50, variable=league_var, values=league_options, font=('Gill Sans MT', 15))
+    league_option = ctk.CTkOptionMenu(tl3, width=150, height=50, variable=league_var, values=league_options, font=('Gill Sans MT', 15))
     league_option.place(relx=0.25, rely=0.175, anchor='center')
     
-    season_option = customtkinter.CTkOptionMenu(tl3, width=150, height=50, variable=season_var, values=season_options, font=('Gill Sans MT', 15))
+    season_option = ctk.CTkOptionMenu(tl3, width=150, height=50, variable=season_var, values=season_options, font=('Gill Sans MT', 15))
     season_option.place(relx=0.75, rely=0.175, anchor='center')
     
-    stat_type_option = customtkinter.CTkOptionMenu(tl3, width=150, height=50, variable=stat_type_var, values=stat_type_options, font=('Gill Sans MT', 15))
+    stat_type_option = ctk.CTkOptionMenu(tl3, width=150, height=50, variable=stat_type_var, values=stat_type_options, font=('Gill Sans MT', 15))
     stat_type_option.place(relx=0.5, rely=0.175, anchor='center')
     
-    table_frame = customtkinter.CTkFrame(tl3, width=800, height=500)
+    table_frame = ctk.CTkFrame(tl3, width=800, height=500)
     table_frame.place(relx=0.5, rely=0.55, anchor='center')
     table = ttk.Treeview(table_frame)
     table.pack(expand=True, fill='both')
 
-    menu_button = customtkinter.CTkButton(master=tl3, text='Menu', width=100, command=lambda: main_menu(tl3), font=('Gill Sans MT', 15))
+    menu_button = ctk.CTkButton(master=tl3, text='Menu', width=100, command=lambda: main_menu(tl3), font=('Gill Sans MT', 15))
     menu_button.place(relx=0.5, rely=0.95, anchor='center')
 
     league_var.trace_add('write', lambda *args: on_option_change(league_var, season_var, stat_type_var, table))
@@ -225,20 +221,25 @@ def create_teams():
 
     tl3.mainloop()'''
 
+league_options = ['Premier League']
+season_options = ['23-24', '22-23', '21-22', '20-21', '19-20', '18-19']
+stat_type_options = ['Standard', 'Keeper', 'Shooting', 'Passing', 'Defense', 'Misc']
+
 # Code used to create and display team statistics
 def create_teams():
-    tl3 = customtkinter.CTk()
+    tl3 = ctk.CTk()
     tl3.geometry("900x700")
     tl3.resizable(True,False)
     tl3.title("Teams")
 
-    title = customtkinter.CTkLabel(tl3, text='Team Statistics',font=('Gill Sans MT', 30))
+    title = ctk.CTkLabel(tl3, text='Team Statistics',font=('Gill Sans MT', 30))
     title.place(relx=0.5, rely=0.05, anchor='center')
 
-    frame = customtkinter.CTkScrollableFrame(tl3,height=450,width=900,orientation='horizontal', fg_color='transparent')
+    frame = ctk.CTkScrollableFrame(tl3,height=450,width=900,orientation='horizontal', fg_color='transparent')
     frame.place(rely=0.25)
-
-    df = pd.read_pickle(r'data\Team\Preimer League\23-24\Standard\standard.pkl')
+    
+    df = f'data\Team\Preimer League\#18-19\Standard\standard.pkl'
+    df = pd.read_pickle(df)
     
     # Create Treeview widget
     tree = ttk.Treeview(frame, style= 'Treeview')
@@ -256,57 +257,57 @@ def create_teams():
     # Add the treeview to the window
     tree.pack(expand=True, fill="both")
 
-    league_label = customtkinter.CTkLabel(tl3,text='League',font=('Gill Sans MT', 25))
+    league_label = ctk.CTkLabel(tl3,text='League',font=('Gill Sans MT', 25))
     league_label.place(relx=0.25, rely=0.11, anchor='center')
-    season_label = customtkinter.CTkLabel(tl3,text='Season',font=('Gill Sans MT', 25))
+    season_label = ctk.CTkLabel(tl3,text='Season',font=('Gill Sans MT', 25))
     season_label.place(relx=0.75, rely=0.11, anchor='center')
-    stat_type_label = customtkinter.CTkLabel(tl3,text='Stat Type',font=('Gill Sans MT', 25))
+    stat_type_label = ctk.CTkLabel(tl3,text='Stat Type',font=('Gill Sans MT', 25))
     stat_type_label.place(relx=0.5, rely=0.11, anchor='center')
 
-    league_option = customtkinter.CTkOptionMenu(tl3, width = 150, height=50, values=league_options,font=('Gill Sans MT', 15))
-    league_option.place(relx=0.25, rely=0.175, anchor='center')
-    season_option = customtkinter.CTkOptionMenu(tl3, width=150,height=50,values=season_options,font=('Gill Sans MT', 15))
-    season_option.place(relx=0.75,rely=0.175,anchor='center')
-    stat_type_option = customtkinter.CTkOptionMenu(tl3, width=150,height=50,values=stat_type_options,font=('Gill Sans MT', 15))
-    stat_type_option.place(relx=0.5,rely=0.175,anchor='center')
+    league_option_menu = ctk.CTkOptionMenu(tl3, width = 150, height=50, values=league_options,font=('Gill Sans MT', 15))
+    league_option_menu.place(relx=0.25, rely=0.175, anchor='center')
+    season_option_menu = ctk.CTkOptionMenu(tl3, width=150,height=50,values=season_options,font=('Gill Sans MT', 15))
+    season_option_menu.place(relx=0.75,rely=0.175,anchor='center')
+    stat_type_option_menu = ctk.CTkOptionMenu(tl3, width=150,height=50,values=stat_type_options,font=('Gill Sans MT', 15))
+    stat_type_option_menu.place(relx=0.5,rely=0.175,anchor='center')
 
-    menu_button = customtkinter.CTkButton(master=tl3, text='Menu', width=100, command=lambda: main_menu(tl3), font=('Gill Sans MT', 15))
+    menu_button = ctk.CTkButton(master=tl3, text='Menu', width=100, command=lambda: main_menu(tl3), font=('Gill Sans MT', 15))
     menu_button.place(relx=0.5, rely=0.95, anchor='center')
 
     tl3.mainloop()
 
 def create_players():
-    tl8 = customtkinter.CTk()
+    tl8 = ctk.CTk()
     tl8.geometry("500x600")
     tl8.title("Players")
     tl8.resizable(False,False)
 
 def create_favs():
-    tl8 = customtkinter.CTk()
+    tl8 = ctk.CTk()
     tl8.geometry("500x600")
     tl8.title("Favourites")
     tl8.resizable(False,False)
 
 def create_years():
-    tl8 = customtkinter.CTk()
+    tl8 = ctk.CTk()
     tl8.geometry("500x600")
     tl8.title("Years")
     tl8.resizable(False,False)
 
 def create_tools():
-    tl8 = customtkinter.CTk()
+    tl8 = ctk.CTk()
     tl8.geometry("500x600")
     tl8.title("Tools")
     tl8.resizable(False,False)
 
 def create_rankings():
-    tl8 = customtkinter.CTk()
+    tl8 = ctk.CTk()
     tl8.geometry("500x600")
     tl8.title("Rankings")
     tl8.resizable(False,False)
 
 def create_leagues():
-    tl4 = customtkinter.CTk()
+    tl4 = ctk.CTk()
     tl4.geometry("500x600")
     tl4.title("League Statistics")
     tl4.resizable(False, False)
@@ -316,44 +317,44 @@ def create_leagues():
 
 # Code used to create the about page
 def create_about():
-    tl8 = customtkinter.CTk()
+    tl8 = ctk.CTk()
     tl8.geometry("500x600")
     tl8.title("About")
     tl8.resizable(False,False)
 
-    label = customtkinter.CTkLabel(master=tl8,text='About',font=('Gill Sans MT', 30))
+    label = ctk.CTkLabel(master=tl8,text='About',font=('Gill Sans MT', 30))
     label.place(relx=0.425,rely=0.01)
 
     # Opens up the about text file and displays it in a textbox
-    textbox = customtkinter.CTkTextbox(master=tl8, width=485, height=450, font =('Gill Sans MT', 15))
+    textbox = ctk.CTkTextbox(master=tl8, width=485, height=450, font =('Gill Sans MT', 15))
     textbox.place(relx=0.025,rely=0.1)
     with open (r'about.txt') as file:
         data = file.read()
     textbox.insert('1.0',data)
     textbox.configure(state='disabled')
 
-    menu_button = customtkinter.CTkButton(master=tl8, text='Menu', height=50, width=200, command=lambda: main_menu(tl8), font=('Gill Sans MT', 15))
+    menu_button = ctk.CTkButton(master=tl8, text='Menu', height=50, width=200, command=lambda: main_menu(tl8), font=('Gill Sans MT', 15))
     menu_button.place(relx=0.5,rely=0.9,anchor='center')
     tl8.mainloop()
 
 # Code used to create the settings page
 def create_settings():
-    tl9 = customtkinter.CTk()
+    tl9 = ctk.CTk()
     tl9.geometry("500x600")
     tl9.title("Settings")
     tl9.resizable(False, False)
 
-    settings_label = customtkinter.CTkLabel(master=tl9, text='Settings', font=('Gill Sans MT', 30))
+    settings_label = ctk.CTkLabel(master=tl9, text='Settings', font=('Gill Sans MT', 30))
     settings_label.place(relx=0.5, rely=0.05, anchor='center')
-    apperance_label = customtkinter.CTkLabel(master=tl9, text='Appearance', font=('Gill Sans MT', 20))
+    apperance_label = ctk.CTkLabel(master=tl9, text='Appearance', font=('Gill Sans MT', 20))
     apperance_label.place(relx=0.5, rely=0.2, anchor='center')
 
     # Option menu to change the appearance to light, dark and system colours
-    appearance_menu = customtkinter.CTkOptionMenu(master=tl9, values=['Dark', 'Light', 'System'], font=('Gill Sans MT', 15), command=lambda mode: appearance_change(mode))
+    appearance_menu = ctk.CTkOptionMenu(master=tl9, values=['Dark', 'Light', 'System'], font=('Gill Sans MT', 15), command=lambda mode: appearance_change(mode))
     appearance_menu.place(relx=0.5, rely=0.3, anchor='center')
     appearance_menu.set(current_theme)
 
-    menu_button = customtkinter.CTkButton(master=tl9, text='Menu', height=50, width=200, command=lambda: main_menu(tl9), font=('Gill Sans MT', 15))
+    menu_button = ctk.CTkButton(master=tl9, text='Menu', height=50, width=200, command=lambda: main_menu(tl9), font=('Gill Sans MT', 15))
     menu_button.place(relx=0.5, rely=0.9, anchor='center')
 
     tl9.mainloop()
@@ -362,7 +363,7 @@ def create_settings():
 def appearance_change(mode: str):
     global current_theme, appearance_change
     current_theme = mode
-    customtkinter.set_appearance_mode(mode)
+    ctk.set_appearance_mode(mode)
 
 # Command for the main menu button
 def main_menu(root):
