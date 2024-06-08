@@ -4,7 +4,7 @@ import os
 
 def create_directories():
     base_path = 'data/Team'
-    leagues = ['FRA-Ligue 1']
+    leagues = ['GER-Bundesliga']
     seasons = ['23-24', '22-23', '21-22', '20-21', '19-20', '18-19']
 
     for league in leagues:
@@ -151,7 +151,7 @@ def get_teams(league, season):
     
     return teams_mapping.get(league, {}).get(season, [])
 
-def fetch_and_process_data(leagues, seasons, stat_type):
+def fetch_and_process_data_teams(leagues, seasons, stat_type):
     all_data = []
 
     for league in leagues:
@@ -189,10 +189,10 @@ def save_data_to_pickle(data, stat_type):
 if __name__ == "__main__":
     create_directories()
 
-    leagues = ["FRA-Ligue 1"]
+    leagues = ["GER-Bundesliga"]
     seasons = ['23-24', '22-23', '21-22', '20-21', '19-20', '18-19']
-    stat_types = ['Defense', 'Misc']
+    stat_types = ['Standard', 'Keeper', 'Shooting', 'Passing', 'Defense', 'Misc']
 
     for stat_type in stat_types:
-        data = fetch_and_process_data(leagues, seasons, stat_type)
+        data = fetch_and_process_data_teams(leagues, seasons, stat_type)
         save_data_to_pickle(data, stat_type)

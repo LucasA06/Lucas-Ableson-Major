@@ -22,9 +22,7 @@
 
 * Get buttons under the pictures so that users can click on the pictures and they display the stats based upon the league, team or player.
 
-* Add tools and more things to settings to make the app more complete
-
-* Make a terms and services that pops up once and never again once someone has read it and agreed to it.
+* Make a terms and services that pops up once and never again once someone has read it and agreed to it. *Completed
 
 ## Completed To Dos
 * Finished the Gui and all the pictures that are displayed in the gui and fixed a problem with the display of the pictures.
@@ -32,3 +30,5 @@
 * Found the best method to display the data in a way I like and a way that looks the best to me.
 
 * I am going to import all the data I need into a folder called 'data' and add it to my respository so the data is always there when I need to access it in my gui.
+
+* Terms and Service window now works and pops up when you first start the application and doesn't pop up again once you agree to it.
