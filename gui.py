@@ -152,127 +152,80 @@ def create_home():
 
 create_home()
 
-'''def load_data(league, season, stat_type):
-    file_path = f"data/teams/{league}/{season}/{stat_type}.pkl"
-    if os.path.exists(file_path):
-        return pd.read_pickle(file_path)
-    else:
-        return pd.DataFrame()
+def load_data(tree, league, season, stat_type):
+    file_path = f'data/Team/{league}/{season}/{stat_type}.pkl'
+    
+    # Clear the existing data in the treeview
+    tree.delete(*tree.get_children())
+    
+    try:
+        df = pd.read_pickle(file_path)
+        
+        # Set new columns
+        tree["columns"] = df.columns.tolist()
+        
+        # Remove existing headings
+        for column in tree["columns"]:
+            tree.heading(column, text="")
 
-def update_table(table, df):
-    table.delete(*table.get_children())
-    table['column'] = list(df.columns)
-    table['show'] = 'headings'
-    for column in table['columns']:
-        table.heading(column, text=column)
-    for _, row in df.iterrows():
-        table.insert("", "end", values=list(row))
+        # Add new headings
+        for column in df.columns:
+            tree.heading(column, text=column)
+        
+        # Add new data to the treeview
+        for index, row in df.iterrows():
+            tree.insert("", "end", values=tuple(row))
+    except FileNotFoundError:
+        print(f"File not found: {file_path}")
 
-def on_option_change(league_var, season_var, stat_type_var, table):
-    league = league_var.get()
-    season = season_var.get()
-    stat_type = stat_type_var.get()
-    df = load_data(league, season, stat_type)
-    update_table(table, df)
+def on_option_change(tree, league_option_menu, season_option_menu, stat_type_option_menu):
+    league = league_option_menu.get()
+    season = season_option_menu.get()
+    stat_type = stat_type_option_menu.get()
+    load_data(tree, league, season, stat_type)
 
 def create_teams():
     tl3 = ctk.CTk()
     tl3.geometry("900x700")
-    tl3.resizable(False, False)
+    tl3.resizable(True, False)
     tl3.title("Teams")
 
     title = ctk.CTkLabel(tl3, text='Team Statistics', font=('Gill Sans MT', 30))
     title.place(relx=0.5, rely=0.05, anchor='center')
 
-    league_label = ctk.CTkLabel(tl3, text='League', font=('Gill Sans MT', 25))
-    league_label.place(relx=0.25, rely=0.11, anchor='center')
-    season_label = ctk.CTkLabel(tl3, text='Season', font=('Gill Sans MT', 25))
-    season_label.place(relx=0.75, rely=0.11, anchor='center')
-    stat_type_label = ctk.CTkLabel(tl3, text='Stat Type', font=('Gill Sans MT', 25))
-    stat_type_label.place(relx=0.5, rely=0.11, anchor='center')
-
-    league_var = ctk.StringVar(value=league_options[0])
-    season_var = ctk.StringVar(value=season_options[0])
-    stat_type_var = ctk.StringVar(value=stat_type_options[0])
-
-    league_option = ctk.CTkOptionMenu(tl3, width=150, height=50, variable=league_var, values=league_options, font=('Gill Sans MT', 15))
-    league_option.place(relx=0.25, rely=0.175, anchor='center')
-    
-    season_option = ctk.CTkOptionMenu(tl3, width=150, height=50, variable=season_var, values=season_options, font=('Gill Sans MT', 15))
-    season_option.place(relx=0.75, rely=0.175, anchor='center')
-    
-    stat_type_option = ctk.CTkOptionMenu(tl3, width=150, height=50, variable=stat_type_var, values=stat_type_options, font=('Gill Sans MT', 15))
-    stat_type_option.place(relx=0.5, rely=0.175, anchor='center')
-    
-    table_frame = ctk.CTkFrame(tl3, width=800, height=500)
-    table_frame.place(relx=0.5, rely=0.55, anchor='center')
-    table = ttk.Treeview(table_frame)
-    table.pack(expand=True, fill='both')
-
-    menu_button = ctk.CTkButton(master=tl3, text='Menu', width=100, command=lambda: main_menu(tl3), font=('Gill Sans MT', 15))
-    menu_button.place(relx=0.5, rely=0.95, anchor='center')
-
-    league_var.trace_add('write', lambda *args: on_option_change(league_var, season_var, stat_type_var, table))
-    season_var.trace_add('write', lambda *args: on_option_change(league_var, season_var, stat_type_var, table))
-    stat_type_var.trace_add('write', lambda *args: on_option_change(league_var, season_var, stat_type_var, table))
-
-    initial_df = load_data(league_options[0], season_options[0], stat_type_options[0])
-    update_table(table, initial_df)
-
-    tl3.mainloop()'''
-
-league_options = ['Premier League']
-season_options = ['23-24', '22-23', '21-22', '20-21', '19-20', '18-19']
-stat_type_options = ['Standard', 'Keeper', 'Shooting', 'Passing', 'Defense', 'Misc']
-
-# Code used to create and display team statistics
-def create_teams():
-    tl3 = ctk.CTk()
-    tl3.geometry("900x700")
-    tl3.resizable(True,False)
-    tl3.title("Teams")
-
-    title = ctk.CTkLabel(tl3, text='Team Statistics',font=('Gill Sans MT', 30))
-    title.place(relx=0.5, rely=0.05, anchor='center')
-
-    frame = ctk.CTkScrollableFrame(tl3,height=450,width=900,orientation='horizontal', fg_color='transparent')
+    frame = ctk.CTkScrollableFrame(tl3, height=450, width=900, orientation='horizontal', fg_color='transparent')
     frame.place(rely=0.25)
-    
-    df = f'data\Team\Preimer League\#18-19\Standard\standard.pkl'
-    df = pd.read_pickle(df)
-    
-    # Create Treeview widget
-    tree = ttk.Treeview(frame, style= 'Treeview')
-    tree["columns"] = df.columns.tolist()
-    tree["show"] = "headings"
 
-    # Add columns
-    for column in df.columns:
-        tree.heading(column, text=column)
-
-    # Add data to the treeview
-    for index, row in df.iterrows():
-        tree.insert("", "end", values=tuple(row))
-
-    # Add the treeview to the window
+    tree = ttk.Treeview(frame, style='Treeview')
     tree.pack(expand=True, fill="both")
 
-    league_label = ctk.CTkLabel(tl3,text='League',font=('Gill Sans MT', 25))
-    league_label.place(relx=0.25, rely=0.11, anchor='center')
-    season_label = ctk.CTkLabel(tl3,text='Season',font=('Gill Sans MT', 25))
-    season_label.place(relx=0.75, rely=0.11, anchor='center')
-    stat_type_label = ctk.CTkLabel(tl3,text='Stat Type',font=('Gill Sans MT', 25))
-    stat_type_label.place(relx=0.5, rely=0.11, anchor='center')
+    league_label = ctk.CTkLabel(tl3, text='League', font=('Gill Sans MT', 25))
+    league_label.place(relx=0.3, rely=0.11, anchor='center')
+    season_label = ctk.CTkLabel(tl3, text='Season', font=('Gill Sans MT', 25))
+    season_label.place(relx=0.5, rely=0.11, anchor='center')
+    stat_type_label = ctk.CTkLabel(tl3, text='Stat Type', font=('Gill Sans MT', 25))
+    stat_type_label.place(relx=0.7, rely=0.11, anchor='center')
 
-    league_option_menu = ctk.CTkOptionMenu(tl3, width = 150, height=50, values=league_options,font=('Gill Sans MT', 15))
+    league_options = ['ENG-Premier League', 'ESP-La Liga', 'ITA-Serie A','GER-Bundesliga','FRA-Ligue 1']
+    season_options = ['23-24', '22-23', '21-22', '20-21', '19-20', '18-19']
+    stat_type_options = ['Standard', 'Keeper', 'Shooting', 'Passing', 'Defense', 'Misc']
+
+    league_option_menu = ctk.CTkOptionMenu(tl3, width=150, height=50, values=league_options, font=('Gill Sans MT', 15))
     league_option_menu.place(relx=0.25, rely=0.175, anchor='center')
-    season_option_menu = ctk.CTkOptionMenu(tl3, width=150,height=50,values=season_options,font=('Gill Sans MT', 15))
-    season_option_menu.place(relx=0.75,rely=0.175,anchor='center')
-    stat_type_option_menu = ctk.CTkOptionMenu(tl3, width=150,height=50,values=stat_type_options,font=('Gill Sans MT', 15))
-    stat_type_option_menu.place(relx=0.5,rely=0.175,anchor='center')
+    season_option_menu = ctk.CTkOptionMenu(tl3, width=150, height=50, values=season_options, font=('Gill Sans MT', 15))
+    season_option_menu.place(relx=0.5, rely=0.175, anchor='center')
+    stat_type_option_menu = ctk.CTkOptionMenu(tl3, width=150, height=50, values=stat_type_options, font=('Gill Sans MT', 15))
+    stat_type_option_menu.place(relx=0.75, rely=0.175, anchor='center')
+
+    # Set the command to update the table based on the dropdown selections
+    league_option_menu.configure(command=lambda _: on_option_change(tree, league_option_menu, season_option_menu, stat_type_option_menu))
+    season_option_menu.configure(command=lambda _: on_option_change(tree, league_option_menu, season_option_menu, stat_type_option_menu))
+    stat_type_option_menu.configure(command=lambda _: on_option_change(tree, league_option_menu, season_option_menu, stat_type_option_menu))
 
     menu_button = ctk.CTkButton(master=tl3, text='Menu', width=100, command=lambda: main_menu(tl3), font=('Gill Sans MT', 15))
     menu_button.place(relx=0.5, rely=0.95, anchor='center')
+
+    load_data(tree, 'ENG-Premier League', '23-24', 'standard')
 
     tl3.mainloop()
 

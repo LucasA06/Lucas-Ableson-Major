@@ -14,7 +14,7 @@
     Edit: I have realised that .resize does not work across devices because the size of the pictures depended on the systems scale so I have decided that the pictures will be on 100% scale and when someone download's my app I will get them, through the installation guide, to check their display scale and if it is not 100% I will get them to change it. It is between that or I make different gui files depending on different display scales.
 
 ## To Dos
-* Find a better way to import massive amounts of data only once so that there isn't a massive wait time everytime the app opens as it is loading in all the data every time when there is already data there.
+* Find a better way to import massive amounts of data only once so that there isn't a massive wait time everytime the app opens as it is loading in all the data every time when there is already data there. *Completed
 
 * Import and display all the data under their respective headings in a nice format.
 
@@ -30,3 +30,5 @@
 * Finished the Gui and all the pictures that are displayed in the gui and fixed a problem with the display of the pictures.
 
 * Found the best method to display the data in a way I like and a way that looks the best to me.
+
+* I am going to import all the data I need into a folder called 'data' and add it to my respository so the data is always there when I need to access it in my gui.
