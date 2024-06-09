@@ -84,16 +84,20 @@ def open_settings():
     app.withdraw()
     create_settings()
 
-def open_top_scorers():
+def open_matches():
     app.withdraw()
-    create_top_scorers()
+    create_matches()
+
+def open_rankings():
+    app.withdraw()
+    create_rankings()
 
 # All the code used to create the home gui page
 def create_home():
     # Creates a grid to easily place the buttons in the sidebar frame
     sidebar = ctk.CTkFrame(master=app,width=1,height=700,corner_radius=0)
     sidebar.grid()
-    sidebar_button1 = ctk.CTkButton(sidebar,width=100,text='Rankings',command=open_top_scorers, font=('Gill Sans MT', 15))
+    sidebar_button1 = ctk.CTkButton(sidebar,width=100,text='Matches',command=open_matches, font=('Gill Sans MT', 15))
     sidebar_button1.grid(row=1, column=0,padx=5,pady=5)
     sidebar_button2 = ctk.CTkButton(sidebar,width=100,text='Teams',command=open_teams, font=('Gill Sans MT', 15))
     sidebar_button2.grid(row=2, column=0,padx=5,pady=5)
@@ -101,21 +105,23 @@ def create_home():
     sidebar_button3.grid(row=3, column=0,padx=5,pady=5)
     sidebar_button4 = ctk.CTkButton(sidebar,width=100,text='League Tables',command=open_league_tables, font=('Gill Sans MT', 15))
     sidebar_button4.grid(row=4, column=0,padx=5,pady=5)
+    sidebar_button5 = ctk.CTkButton(sidebar,width=100,text='Rankings',command=open_rankings, font=('Gill Sans MT', 15))
+    sidebar_button5.grid(row=5, column=0,padx=5,pady=5)
     sidebar_button11 = ctk.CTkButton(sidebar,width=100,text='',fg_color='',hover=False)
-    sidebar_button11.grid(row=9, column=0,padx=5,pady=205)
+    sidebar_button11.grid(row=6, column=0,padx=5,pady=185)
     sidebar_button9 = ctk.CTkButton(sidebar,width=100,text='About',command=open_about, font=('Gill Sans MT', 15))
-    sidebar_button9.grid(row=10, column=0,padx=5,pady=5)
+    sidebar_button9.grid(row=7, column=0,padx=5,pady=5)
     sidebar_button10 = ctk.CTkButton(sidebar,width=100,text='Settings',command=open_settings, font=('Gill Sans MT', 15))
-    sidebar_button10.grid(row=11, column=0,padx=5,pady=5)
+    sidebar_button10.grid(row=8, column=0,padx=5,pady=5)
     exit_button = ctk.CTkButton(sidebar,width=100,text='Exit',command=app.withdraw, fg_color='red', font=('Gill Sans MT', 15))
-    exit_button.grid(row=12, column=0,padx=5,pady=5)
+    exit_button.grid(row=9, column=0,padx=5,pady=5)
 
     # Create the buttons for the home screen
     button1 = ctk.CTkButton(master=app, text="League Tables", command=open_league_tables, font=('Gill Sans MT', 15))
     button1.place(relx=0.2, rely=0.1)
-    button2 =ctk.CTkButton(master=app,text='Players',command=open_players, font=('Gill Sans MT', 15))
+    button2 = ctk.CTkButton(master=app,text='Players',command=open_players, font=('Gill Sans MT', 15))
     button2.place(relx=0.475,rely=0.1)
-    button3 =ctk.CTkButton(master=app,text='Teams',command=open_teams, font=('Gill Sans MT', 15))
+    button3 = ctk.CTkButton(master=app,text='Teams',command=open_teams, font=('Gill Sans MT', 15))
     button3.place(relx=0.75,rely=0.1)
     entry = ctk.CTkEntry(master=app, placeholder_text='Search', width=525, font=('Gill Sans MT', 15))
     entry.place(relx=0.2,rely=0.025)
@@ -127,6 +133,14 @@ def create_home():
     player_text.place(x=175,rely=0.59)
     team_text = ctk.CTkLabel(master=app,text='Team Card',font=('Gill Sans MT', 22))
     team_text.place(x=450,rely=0.59)
+
+    # Set the width and height of the home screen pictures
+    league_width = 525
+    league_height = int(league_width * 265/700)
+    player_width = 250
+    player_height = int(player_width * 200/300)
+    team_width = 275
+    team_height = int(team_width * 200/350)
 
     # Get the pictures from their respective directories and randomly select one to present
     picture_dir1 = r'Ladder Pictures'
@@ -142,14 +156,36 @@ def create_home():
     picture_path2 = os.path.join(pic_dir2, random_pic2)
     picture_path3 = os.path.join(pic_dir3, random_pic3)
 
-    # Set the width and height of the home screen pictures
-    league_width = 525
-    league_height = int(league_width * 265/700)
-    player_width = 250
-    player_height = int(player_width * 200/300)
-    team_width = 275
-    team_height = int(team_width * 200/350)
+    league_mapping = {
+    'Bundesliga.png': 'GER-Bundesliga',
+    'La Liga.png': 'ESP-La Liga',
+    'Serie A.png': 'ITA-Serie A',
+    'Premier League.png': 'ENG-Premier League',
+    'Ligue 1.png': 'FRA-Ligue 1'
+}
+    
+    player_league_mapping = {
+    'Alexandre Lacazette.png': 'FRA-Ligue 1',
+    'Cole Palmer.png': 'ENG-Premier League',
+    'Dusan Vlahovic.png': 'ITA-Serie A',
+    'Erling Haaland.png': 'ENG-Premier League',
+    'Harry Kane.png': 'GER-Bundesliga',
+    'Jude Bellingham.PNG':'ESP-La Liga',
+    'Kylian Mbappé.png':'FRA-Ligue 1',
+    'Lautaro Martínez.png':'ITA-Serie A',
+    'Loïs Openda.png':'GER-Bundesliga',
+    'Robert Lewandowski.PNG':'ESP-La Liga'
+    }
 
+    team_mapping = {
+        'Arsenal.png': 'ENG-Premier League',
+        'AS Monaco.png': 'FRA-Ligue 1',
+        'Bayer 04 Leverkusen.png': 'GER-Bundesliga',
+        'FC Bayern Munchen.png': 'GER-Bundesliga',
+        'Manchester City.png': 'ENG-Premier League',
+        'PSG.png': 'FRA-Ligue 1'
+}
+    
     # Opens the pictures, resizes them and displays them in the home screen
     league_image = Image.open(picture_path)
     new_photo1 = league_image.resize((league_width, league_height))
@@ -157,18 +193,23 @@ def create_home():
     league_image_label = ctk.CTkLabel(app, image=league_photo, text='')
     league_image_label.place(relx=0.575, rely=0.4, anchor='center')
     league_image_label.image= league_photo
+    league_image_label.bind("<Button-1>", lambda e:(app.withdraw(),create_league_tables(league_mapping.get(random_pic1, 'ENG-Premier League'))))
+
     player_image = Image.open(picture_path2)
     new_photo2 = player_image.resize((player_width, player_height))
     player_photo = ImageTk.PhotoImage(new_photo2)
     player_image_label = ctk.CTkLabel(app, image=player_photo, text='')
     player_image_label.place(relx=0.375, rely=0.825, anchor='center')
     player_image_label.image = player_photo
+    player_image_label.bind("<Button-1>", lambda e:(app.withdraw(),create_players(player_league_mapping.get(random_pic2, 'ENG-Premier League'), os.path.splitext(random_pic2)[0])))
+
     team_image = Image.open(picture_path3)
     new_photo3 = team_image.resize((team_width, team_height))
     team_photo = ImageTk.PhotoImage(new_photo3)
     team_image_label = ctk.CTkLabel(app, image=team_photo, text='')
     team_image_label.place(relx=0.785, rely=0.825, anchor='center')
     team_image_label.image = team_photo
+    team_image_label.bind("<Button-1>", lambda e:(app.withdraw(),create_teams(team_mapping.get(random_pic3, 'ENG-Premier League'))))
 
     # Configures the card titles so that they are displaying the team, league and player names
     league_text.configure(text=f'League Ladder - {os.path.splitext(os.path.basename(random_pic1))[0]}')
@@ -176,6 +217,15 @@ def create_home():
     team_text.configure(text=f'Team Card \n {os.path.splitext(os.path.basename(random_pic3))[0]}')
 
 create_home()
+
+def treeview_sort_column(tree, col, reverse):
+    data = [(tree.set(child, col), child) for child in tree.get_children('')]
+    data.sort(reverse=reverse)
+    
+    for index, (val, child) in enumerate(data):
+        tree.move(child, '', index)
+    
+    tree.heading(col, command=lambda _col=col: treeview_sort_column(tree, _col, not reverse))
 
 def load_data_teams(tree, league, season, stat_type, search_term_team=''):
     file_path = f'data/Team/{league}/{season}/{stat_type}.pkl'
@@ -198,7 +248,7 @@ def load_data_teams(tree, league, season, stat_type, search_term_team=''):
 
         # Add new headings
         for column in df.columns:
-            tree.heading(column, text=column)
+            tree.heading(column, text=column, command=lambda _col=column: treeview_sort_column(tree, _col, False))
         
         # Add new data to the treeview
         for index, row in df.iterrows():
@@ -215,7 +265,7 @@ def on_option_change_team(tree, league_option_menu_team, season_option_menu_team
 def filter_data_teams(tree, league_option_menu_team, season_option_menu_team, stat_type_option_menu_team, search_entry_team):
     on_option_change_team(tree, league_option_menu_team, season_option_menu_team, stat_type_option_menu_team, search_entry_team)
 
-def create_teams():
+def create_teams(league='ENG-Premier League'):
     tl3 = ctk.CTk()
     tl3.geometry("900x700")
     tl3.resizable(True, False)
@@ -243,6 +293,7 @@ def create_teams():
 
     league_option_menu_team = ctk.CTkOptionMenu(tl3, width=150, height=50, values=league_options, font=('Gill Sans MT', 15))
     league_option_menu_team.place(relx=0.25, rely=0.15, anchor='center')
+    league_option_menu_team.set(league)
     season_option_menu_team = ctk.CTkOptionMenu(tl3, width=150, height=50, values=season_options, font=('Gill Sans MT', 15))
     season_option_menu_team.place(relx=0.5, rely=0.15, anchor='center')
     stat_type_option_menu_team = ctk.CTkOptionMenu(tl3, width=150, height=50, values=stat_type_options, font=('Gill Sans MT', 15))
@@ -253,14 +304,14 @@ def create_teams():
     search_entry_team .bind('<KeyRelease>', lambda event: filter_data_teams(tree, league_option_menu_team, season_option_menu_team, stat_type_option_menu_team, search_entry_team))
 
     # Set the command to update the table based on the dropdown selections
-    league_option_menu_team.configure(command=lambda _: on_option_change_team(tree, league_option_menu_team, season_option_menu_team, stat_type_option_menu_team))
-    season_option_menu_team.configure(command=lambda _: on_option_change_team(tree, league_option_menu_team, season_option_menu_team, stat_type_option_menu_team))
-    stat_type_option_menu_team.configure(command=lambda _: on_option_change_team(tree, league_option_menu_team, season_option_menu_team, stat_type_option_menu_team))
+    league_option_menu_team.configure(command=lambda _: on_option_change_team(tree, league_option_menu_team, season_option_menu_team, stat_type_option_menu_team, search_entry_team))
+    season_option_menu_team.configure(command=lambda _: on_option_change_team(tree, league_option_menu_team, season_option_menu_team, stat_type_option_menu_team, search_entry_team))
+    stat_type_option_menu_team.configure(command=lambda _: on_option_change_team(tree, league_option_menu_team, season_option_menu_team, stat_type_option_menu_team, search_entry_team))
 
     menu_button = ctk.CTkButton(master=tl3, text='Menu', width=100, command=lambda: main_menu(tl3), font=('Gill Sans MT', 15))
     menu_button.place(relx=0.5, rely=0.95, anchor='center')
 
-    load_data_teams(tree, 'ENG-Premier League', '23-24', 'standard')
+    load_data_teams(tree, league, '23-24', 'standard')
 
     tl3.mainloop()
 
@@ -292,7 +343,7 @@ def load_data_players(tree, league, season, stat_type, search_term_players=''):
 
         # Add new headings
         for column in df.columns:
-            tree.heading(column, text=column)
+            tree.heading(column, text=column, command=lambda _col=column: treeview_sort_column(tree, _col, False))
         
         # Add new data to the treeview
         for index, row in df.iterrows():
@@ -303,61 +354,188 @@ def load_data_players(tree, league, season, stat_type, search_term_players=''):
 def filter_data_players(tree, league_option_menu_players, season_option_menu_players, stat_type_option_menu_players, search_entry_players):
     on_option_change_players(tree, league_option_menu_players, season_option_menu_players, stat_type_option_menu_players, search_entry_players)
 
-def create_players():
-    tl8 = ctk.CTk()
-    tl8.geometry("900x700")
-    tl8.title("Players")
-    tl8.resizable(False,False)
+def create_players(league='ENG-Premier League', player_name=''):
+    tl1 = ctk.CTk()
+    tl1.geometry("900x700")
+    tl1.title("Players")
+    tl1.resizable(False,False)
 
-    title = ctk.CTkLabel(tl8, text='Player Statistics', font=('Gill Sans MT', 30))
+    title = ctk.CTkLabel(tl1, text='Player Statistics', font=('Gill Sans MT', 30))
     title.place(relx=0.5, rely=0.025, anchor='center')
 
-    frame = ctk.CTkScrollableFrame(tl8, height=450, width=900, orientation='horizontal', fg_color='transparent')
+    frame = ctk.CTkScrollableFrame(tl1, height=450, width=900, orientation='horizontal', fg_color='transparent')
     frame.place(rely=0.25)
 
     tree = ttk.Treeview(frame, style='Treeview')
     tree.pack(expand=True, fill="both")
 
-    league_label = ctk.CTkLabel(tl8, text='League', font=('Gill Sans MT', 25))
+    league_label = ctk.CTkLabel(tl1, text='League', font=('Gill Sans MT', 25))
     league_label.place(relx=0.25, rely=0.085, anchor='center')
-    season_label = ctk.CTkLabel(tl8, text='Season', font=('Gill Sans MT', 25))
+    season_label = ctk.CTkLabel(tl1, text='Season', font=('Gill Sans MT', 25))
     season_label.place(relx=0.5, rely=0.085, anchor='center')
-    stat_type_label = ctk.CTkLabel(tl8, text='Stat Type', font=('Gill Sans MT', 25))
+    stat_type_label = ctk.CTkLabel(tl1, text='Stat Type', font=('Gill Sans MT', 25))
     stat_type_label.place(relx=0.75, rely=0.085, anchor='center')
 
     league_options = ['ENG-Premier League', 'ESP-La Liga', 'ITA-Serie A','GER-Bundesliga','FRA-Ligue 1']
     season_options = ['23-24', '22-23', '21-22', '20-21', '19-20', '18-19']
     stat_type_options = ['Standard', 'Keeper', 'Shooting', 'Passing', 'Defense', 'Misc']
 
-    league_option_menu_players = ctk.CTkOptionMenu(tl8, width=150, height=50, values=league_options, font=('Gill Sans MT', 15))
+    league_option_menu_players = ctk.CTkOptionMenu(tl1, width=150, height=50, values=league_options, font=('Gill Sans MT', 15))
     league_option_menu_players.place(relx=0.25, rely=0.15, anchor='center')
-    season_option_menu_players = ctk.CTkOptionMenu(tl8, width=150, height=50, values=season_options, font=('Gill Sans MT', 15))
+    league_option_menu_players.set(league)
+    season_option_menu_players = ctk.CTkOptionMenu(tl1, width=150, height=50, values=season_options, font=('Gill Sans MT', 15))
     season_option_menu_players.place(relx=0.5, rely=0.15, anchor='center')
-    stat_type_option_menu_players = ctk.CTkOptionMenu(tl8, width=150, height=50, values=stat_type_options, font=('Gill Sans MT', 15))
+    stat_type_option_menu_players = ctk.CTkOptionMenu(tl1, width=150, height=50, values=stat_type_options, font=('Gill Sans MT', 15))
     stat_type_option_menu_players.place(relx=0.75, rely=0.15, anchor='center')
 
-    search_entry_players = ctk.CTkEntry(tl8, placeholder_text='Search', width=400, font=('Gill Sans MT', 15))
-    search_entry_players .place(relx=0.5, rely=0.225, anchor='center')
-    search_entry_players .bind('<KeyRelease>', lambda event: filter_data_players(tree, league_option_menu_players, season_option_menu_players, stat_type_option_menu_players, search_entry_players))
+    search_entry_players = ctk.CTkEntry(tl1, placeholder_text='Search', width=400, font=('Gill Sans MT', 15))
+    search_entry_players.place(relx=0.5, rely=0.225, anchor='center')
+    search_entry_players.bind('<KeyRelease>', lambda event: filter_data_players(tree, league_option_menu_players, season_option_menu_players, stat_type_option_menu_players, search_entry_players))
+
+    # Set the search entry with the player name if provided
+    if player_name:
+        search_entry_players.insert(0, player_name)
+        # Trigger the filter function to refine the data
+        filter_data_players(tree, league_option_menu_players, season_option_menu_players, stat_type_option_menu_players, search_entry_players)
 
     # Set the command to update the table based on the dropdown selections
     league_option_menu_players.configure(command=lambda _: on_option_change_players(tree, league_option_menu_players, season_option_menu_players, stat_type_option_menu_players, search_entry_players))
     season_option_menu_players.configure(command=lambda _: on_option_change_players(tree, league_option_menu_players, season_option_menu_players, stat_type_option_menu_players, search_entry_players))
     stat_type_option_menu_players.configure(command=lambda _: on_option_change_players(tree, league_option_menu_players, season_option_menu_players, stat_type_option_menu_players, search_entry_players))
 
-    menu_button = ctk.CTkButton(master=tl8, text='Menu', width=100, command=lambda: main_menu(tl8), font=('Gill Sans MT', 15))
+    menu_button = ctk.CTkButton(master=tl1, text='Menu', width=100, command=lambda: main_menu(tl1), font=('Gill Sans MT', 15))
     menu_button.place(relx=0.5, rely=0.95, anchor='center')
 
-    load_data_players(tree, 'ENG-Premier League', '23-24', 'standard')
+    load_data_players(tree, league, '23-24', 'standard')
 
-    tl8.mainloop()
+    tl1.mainloop()
 
-def create_top_scorers():
-    tl8 = ctk.CTk()
-    tl8.geometry("500x600")
-    tl8.title("Rankings")
-    tl8.resizable(False,False)
+def load_data_matches(tree_matches, league, season, search_term=''):
+    file_path = f'data/Matches/{league}/{season}/{league}.pkl'
+    
+    # Clear the existing data in the treeview
+    tree_matches.delete(*tree_matches.get_children())
+    
+    try:
+        df = pd.read_pickle(file_path)
+        
+        if search_term:
+            df = df[df.apply(lambda row: row.astype(str).str.contains(search_term, case=False).any(), axis=1)]
 
+        # Set new columns
+        tree_matches["columns"] = df.columns.tolist()
+        
+        # Remove existing headings
+        for column in tree_matches["columns"]:
+            tree_matches.heading(column, text="")
+
+        # Add new headings
+        for column in df.columns:
+            tree_matches.heading(column, text=column, command=lambda _col=column: treeview_sort_column(tree_matches, _col, False))
+
+        # Add new data to the treeview
+        for index, row in df.iterrows():
+            tree_matches.insert("", "end", values=tuple(row))
+    except FileNotFoundError:
+        print(f"File not found: {file_path}")
+
+def filter_data_matches(tree_matches, league_option_menu_matches, season_option_menu_matches, search_entry_matches, home_entry_matches, away_entry_matches):
+    league = league_option_menu_matches.get()
+    season = season_option_menu_matches.get()
+    search_term = search_entry_matches.get()
+    home_team = home_entry_matches.get().strip()
+    away_team = away_entry_matches.get().strip()
+
+    file_path = f'data/Matches/{league}/{season}/{league}.pkl'
+    
+    # Clear the existing data in the treeview
+    tree_matches.delete(*tree_matches.get_children())
+    
+    try:
+        df = pd.read_pickle(file_path)
+
+        if home_team:
+            df = df[df['home_team'].str.contains(home_team, case=False, na=False)]
+        
+        if away_team:
+            df = df[df['away_team'].str.contains(away_team, case=False, na=False)]
+
+        if search_term:
+            df = df[df.apply(lambda row: row.astype(str).str.contains(search_term, case=False).any(), axis=1)]
+
+        # Set new columns
+        tree_matches["columns"] = df.columns.tolist()
+        
+        # Remove existing headings
+        for column in tree_matches["columns"]:
+            tree_matches.heading(column, text="")
+
+        # Add new headings
+        for column in df.columns:
+            tree_matches.heading(column, text=column, command=lambda _col=column: treeview_sort_column(tree_matches, _col, False))
+        
+        # Add new data to the treeview
+        for index, row in df.iterrows():
+            tree_matches.insert("", "end", values=tuple(row))
+    except FileNotFoundError:
+        print(f"File not found: {file_path}")
+
+def on_option_change_matches(tree_matches, league_option_menu_matches, season_option_menu_matches, search_entry_matches, home_entry_matches, away_entry_matches):
+    filter_data_matches(tree_matches, league_option_menu_matches, season_option_menu_matches, search_entry_matches, home_entry_matches, away_entry_matches)
+
+def create_matches():
+    tl4 = ctk.CTk()
+    tl4.geometry("900x700")
+    tl4.title("Matches")
+    tl4.resizable(False, False)
+
+    title = ctk.CTkLabel(tl4, text='Matches', font=('Gill Sans MT', 30))
+    title.place(relx=0.5, rely=0.025, anchor='center')
+
+    frame = ctk.CTkScrollableFrame(tl4, height=450, width=900, orientation='horizontal', fg_color='transparent')
+    frame.place(rely=0.25)
+
+    tree_matches = ttk.Treeview(frame, style='Treeview')
+    tree_matches.pack(expand=True, fill="both")
+
+    league_label = ctk.CTkLabel(tl4, text='League', font=('Gill Sans MT', 25))
+    league_label.place(relx=0.15, rely=0.085, anchor='center')
+    season_label = ctk.CTkLabel(tl4, text='Season', font=('Gill Sans MT', 25))
+    season_label.place(relx=0.383333, rely=0.085, anchor='center')
+    home_label = ctk.CTkLabel(tl4, text='Home Team', font=('Gill Sans MT', 25))
+    home_label.place(relx=0.616667, rely=0.085, anchor='center')
+    away_label = ctk.CTkLabel(tl4, text='Away Team', font=('Gill Sans MT', 25))
+    away_label.place(relx=0.85, rely=0.085, anchor='center')
+
+    league_options_matches = ['ENG-Premier League', 'ESP-La Liga', 'ITA-Serie A','GER-Bundesliga','FRA-Ligue 1']
+    season_options_matches = ['2023-2024', '2022-2023', '2021-2022', '2020-2021', '2019-2020', '2018-2019']
+
+    league_option_menu_matches = ctk.CTkOptionMenu(tl4, width=150, height=50, values=league_options_matches, font=('Gill Sans MT', 15))
+    league_option_menu_matches.place(relx=0.15, rely=0.15, anchor='center')
+    season_option_menu_matches = ctk.CTkOptionMenu(tl4, width=150, height=50, values=season_options_matches, font=('Gill Sans MT', 15))
+    season_option_menu_matches.place(relx=0.383333, rely=0.15, anchor='center')
+    
+    home_entry_matches = ctk.CTkEntry(tl4, placeholder_text='Home Team', width=150, font=('Gill Sans MT', 15))
+    home_entry_matches.place(relx=0.616667, rely=0.15, anchor='center')
+    away_entry_matches = ctk.CTkEntry(tl4, placeholder_text='Away Team', width=150, font=('Gill Sans MT', 15))
+    away_entry_matches.place(relx=0.85, rely=0.15, anchor='center')
+
+    search_entry_matches = ctk.CTkEntry(tl4, placeholder_text='Search', width=400, font=('Gill Sans MT', 15))
+    search_entry_matches .place(relx=0.5, rely=0.225, anchor='center')
+    search_entry_matches.bind('<KeyRelease>', lambda event: filter_data_matches(tree_matches, league_option_menu_matches, season_option_menu_matches, search_entry_matches, home_entry_matches, away_entry_matches))
+    home_entry_matches.bind('<KeyRelease>', lambda event: filter_data_matches(tree_matches, league_option_menu_matches, season_option_menu_matches, search_entry_matches, home_entry_matches, away_entry_matches))
+    away_entry_matches.bind('<KeyRelease>', lambda event: filter_data_matches(tree_matches, league_option_menu_matches, season_option_menu_matches, search_entry_matches, home_entry_matches, away_entry_matches))
+
+    # Set the command to update the table based on the dropdown selections
+    league_option_menu_matches.configure(command=lambda _: on_option_change_matches(tree_matches, league_option_menu_matches, season_option_menu_matches, search_entry_matches, home_entry_matches, away_entry_matches))
+    season_option_menu_matches.configure(command=lambda _: on_option_change_matches(tree_matches, league_option_menu_matches, season_option_menu_matches, search_entry_matches, home_entry_matches, away_entry_matches))
+
+    menu_button = ctk.CTkButton(master=tl4, text='Menu', width=100, command=lambda: main_menu(tl4), font=('Gill Sans MT', 15))
+    menu_button.place(relx=0.5, rely=0.95, anchor='center')
+
+    load_data_matches(tree_matches, 'ENG-Premier League', '2023-2024')
+
+    tl4.mainloop()
 
 def load_data_table(tree, league, season, search_term_table=''):
     file_path = f'data/Leagues/{league}/{season}/{league}.pkl'
@@ -396,7 +574,7 @@ def on_option_change_table(tree, league_option_menu_table, season_option_menu_ta
 def filter_data_table(tree, league_option_menu_table, season_option_menu_table, search_entry_table):
     on_option_change_table(tree, league_option_menu_table, season_option_menu_table, search_entry_table)
 
-def create_league_tables():
+def create_league_tables(league='ENG-Premier League', season='2023-2024'):
     tl4 = ctk.CTk()
     tl4.geometry("900x700")
     tl4.title("League Tables")
@@ -421,8 +599,10 @@ def create_league_tables():
 
     league_option_menu_table = ctk.CTkOptionMenu(tl4, width=150, height=50, values=league_options_table, font=('Gill Sans MT', 15))
     league_option_menu_table.place(relx=0.3, rely=0.15, anchor='center')
+    league_option_menu_table.set(league)
     season_option_menu_table = ctk.CTkOptionMenu(tl4, width=150, height=50, values=season_options_table, font=('Gill Sans MT', 15))
     season_option_menu_table.place(relx=0.7, rely=0.15, anchor='center')
+    season_option_menu_table.set(season)
 
     search_entry_table = ctk.CTkEntry(tl4, placeholder_text='Search', width=400, font=('Gill Sans MT', 15))
     search_entry_table .place(relx=0.5, rely=0.225, anchor='center')
@@ -435,53 +615,59 @@ def create_league_tables():
     menu_button = ctk.CTkButton(master=tl4, text='Menu', width=100, command=lambda: main_menu(tl4), font=('Gill Sans MT', 15))
     menu_button.place(relx=0.5, rely=0.95, anchor='center')
 
-    load_data_table(tree, 'ENG-Premier League', '2023-2024')
+    load_data_table(tree, league, season)
 
     tl4.mainloop()
 
+def create_rankings():
+    tl5 = ctk.CTk()
+    tl5.geometry("900x700")
+    tl5.title("Rankings")
+    tl5.resizable(False, False)
+
 # Code used to create the about page
 def create_about():
-    tl8 = ctk.CTk()
-    tl8.geometry("500x600")
-    tl8.title("About")
-    tl8.resizable(False,False)
+    tl6 = ctk.CTk()
+    tl6.geometry("500x600")
+    tl6.title("About")
+    tl6.resizable(False,False)
 
-    label = ctk.CTkLabel(master=tl8,text='About',font=('Gill Sans MT', 30))
+    label = ctk.CTkLabel(master=tl6,text='About',font=('Gill Sans MT', 30))
     label.place(relx=0.425,rely=0.01)
 
     # Opens up the about text file and displays it in a textbox
-    textbox = ctk.CTkTextbox(master=tl8, width=485, height=450, font =('Gill Sans MT', 15))
+    textbox = ctk.CTkTextbox(master=tl6, width=485, height=450, font =('Gill Sans MT', 15))
     textbox.place(relx=0.025,rely=0.1)
     with open (r'about.txt') as file:
         data = file.read()
     textbox.insert('1.0',data)
     textbox.configure(state='disabled')
 
-    menu_button = ctk.CTkButton(master=tl8, text='Menu', height=50, width=200, command=lambda: main_menu(tl8), font=('Gill Sans MT', 15))
+    menu_button = ctk.CTkButton(master=tl6, text='Menu', height=50, width=200, command=lambda: main_menu(tl6), font=('Gill Sans MT', 15))
     menu_button.place(relx=0.5,rely=0.9,anchor='center')
-    tl8.mainloop()
+    tl6.mainloop()
 
 # Code used to create the settings page
 def create_settings():
-    tl9 = ctk.CTk()
-    tl9.geometry("500x600")
-    tl9.title("Settings")
-    tl9.resizable(False, False)
+    tl7 = ctk.CTk()
+    tl7.geometry("500x600")
+    tl7.title("Settings")
+    tl7.resizable(False, False)
 
-    settings_label = ctk.CTkLabel(master=tl9, text='Settings', font=('Gill Sans MT', 30))
+    settings_label = ctk.CTkLabel(master=tl7, text='Settings', font=('Gill Sans MT', 30))
     settings_label.place(relx=0.5, rely=0.05, anchor='center')
-    apperance_label = ctk.CTkLabel(master=tl9, text='Appearance', font=('Gill Sans MT', 20))
+    apperance_label = ctk.CTkLabel(master=tl7, text='Appearance', font=('Gill Sans MT', 20))
     apperance_label.place(relx=0.5, rely=0.2, anchor='center')
 
     # Option menu to change the appearance to light, dark and system colours
-    appearance_menu = ctk.CTkOptionMenu(master=tl9, values=['Light','Dark', 'System'], font=('Gill Sans MT', 15), command=lambda mode: appearance_change(mode))
+    appearance_menu = ctk.CTkOptionMenu(master=tl7, values=['Light','Dark', 'System'], font=('Gill Sans MT', 15), command=lambda mode: appearance_change(mode))
     appearance_menu.place(relx=0.5, rely=0.3, anchor='center')
     appearance_menu.set(current_theme)
 
-    menu_button = ctk.CTkButton(master=tl9, text='Menu', height=50, width=200, command=lambda: main_menu(tl9), font=('Gill Sans MT', 15))
+    menu_button = ctk.CTkButton(master=tl7, text='Menu', height=50, width=200, command=lambda: main_menu(tl7), font=('Gill Sans MT', 15))
     menu_button.place(relx=0.5, rely=0.9, anchor='center')
 
-    tl9.mainloop()
+    tl7.mainloop()
 
 # Command for changing the apperance of the window
 def appearance_change(mode: str):
