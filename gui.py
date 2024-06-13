@@ -6,6 +6,7 @@ import os
 import random
 import tkinter as tk
 import sys
+import plotly.graph_objects as go
 
 def agree_clicked():
     with open('agreement_status', 'w') as f:
@@ -88,10 +89,6 @@ def open_matches():
     app.withdraw()
     create_matches()
 
-def open_rankings():
-    app.withdraw()
-    create_rankings()
-
 # All the code used to create the home gui page
 def create_home():
     # Creates a grid to easily place the buttons in the sidebar frame
@@ -105,10 +102,8 @@ def create_home():
     sidebar_button3.grid(row=3, column=0,padx=5,pady=5)
     sidebar_button4 = ctk.CTkButton(sidebar,width=100,text='League Tables',command=open_league_tables, font=('Gill Sans MT', 15))
     sidebar_button4.grid(row=4, column=0,padx=5,pady=5)
-    sidebar_button5 = ctk.CTkButton(sidebar,width=100,text='Rankings',command=open_rankings, font=('Gill Sans MT', 15))
-    sidebar_button5.grid(row=5, column=0,padx=5,pady=5)
     sidebar_button11 = ctk.CTkButton(sidebar,width=100,text='',fg_color='',hover=False)
-    sidebar_button11.grid(row=6, column=0,padx=5,pady=185)
+    sidebar_button11.grid(row=6, column=0,padx=5,pady=205)
     sidebar_button9 = ctk.CTkButton(sidebar,width=100,text='About',command=open_about, font=('Gill Sans MT', 15))
     sidebar_button9.grid(row=7, column=0,padx=5,pady=5)
     sidebar_button10 = ctk.CTkButton(sidebar,width=100,text='Settings',command=open_settings, font=('Gill Sans MT', 15))
@@ -125,6 +120,133 @@ def create_home():
     button3.place(relx=0.75,rely=0.1)
     entry = ctk.CTkEntry(master=app, placeholder_text='Search', width=525, font=('Gill Sans MT', 15))
     entry.place(relx=0.2,rely=0.025)
+
+    def display_code(event=None):
+        if entry.get().lower() == 'Eggy':
+            win = ctk.CTk()
+            win.title("Skills Chart")
+            win.geometry("700x450")
+            win.resizable(False, False)
+
+            def create_radar_chart(player_name, data_values, title):
+                fig = go.Figure(data=go.Scatterpolar(
+                    r=data_values,
+                    theta=['Shooting', 'Dribbling', 'Passing', 'Defending', 'Height', 'Agility', 'Finishing', 'Strength', 'Stamina', 'Rebounding', 'Vertical'],
+                    fill='toself'
+                ))
+                
+                fig.update_layout(
+                    polar=dict(
+                        radialaxis=dict(
+                            range=[0, 10],
+                        ),
+                    ),
+                    showlegend=False
+                )
+                
+                return fig
+
+            Finn = create_radar_chart('Finn', [6, 6, 4, 7, 2, 3, 5, 7, 4, 3, 3], 'Finn')
+            fig1 = create_radar_chart('Andrew', [5,6,2,2,1,5,3,1,6,1,2], 'Andrew')
+            fig2 = create_radar_chart('Noah', [8,9,8,8,9,9,10,7,9,9,10], 'Noah')
+            fig3 = create_radar_chart('Lucca', [9,10,7,9,9,9,9,10,8,9,9], 'Lucca')
+            fig4 = create_radar_chart('Talon', [10,8,9,8,9,8,10,9,8,8,7], 'Talon')
+            fig5 = create_radar_chart('Will', [7,6,8,7,9,7,8,6,6,8,6], 'Will')
+            fig6 = create_radar_chart('Lucas', [7,4,8,8,8,9,6,7,8,8,6], 'Lucas')
+            fig7 = create_radar_chart('Daniel', [8,7,6,6,5,6,7,6,6,5,7], 'Daniel')
+            fig8 = create_radar_chart('Zac', [6,5,4,8,6,6,8,10,7,7,4], 'Zac')
+            fig9 = create_radar_chart('Bowie', [4,6,6,4,3,8,2,4,9,4,3], 'Bowie')
+            fig10 = create_radar_chart('Henri', [4,6,3,5,3,8,4,6,10,4,3], 'Henri')
+            fig11 = create_radar_chart('Fraser', [2,3,5,4,5,6,4,6,7,6,3], 'Fraser')
+            fig12 = create_radar_chart('Jacko', [8,7,4,6,9,6,8,6,6,7,4], 'Jacko')
+            fig13 = create_radar_chart('Tom', [7,4,9,7,8,6,7,5,7,8,4], 'Tom')
+            fig14 = create_radar_chart('Kohi', [5,4,4,3,6,5,4,8,6,6,4], 'Kohi')
+            fig15 = create_radar_chart('Leo', [4,6,5,6,6,5,6,5,7,9,5], 'Leo')
+            fig16 = create_radar_chart('Riley', [3,2,4,4,10,3,4,2,3,5,4], 'Riley')
+            fig17 = create_radar_chart('CJ', [3,2,6,9,9,8,4,9,8,6,5], 'CJ')
+
+            def open_Finn():
+                Finn.show()
+
+            def open_Andrew():
+                fig1.show()
+
+            def open_Noah():
+                fig2.show()
+
+            def open_Lucca():
+                fig3.show()
+
+            def open_Talon():
+                fig4.show()
+
+            def open_Will():
+                fig5.show()
+
+            def open_Lucas():
+                fig6.show()
+
+            def open_Daniel():
+                fig7.show()
+
+            def open_Zac():
+                fig8.show()
+
+            def open_Bowie():
+                fig9.show()
+
+            def open_Henri():
+                fig10.show()
+
+            def open_Fraser():
+                fig11.show()
+
+            def open_Jacko():
+                fig12.show()
+
+            def open_Tom():
+                fig13.show()
+
+            def open_Kohi():
+                fig14.show()
+
+            def open_Leo():
+                fig15.show()
+
+            def open_Riley():
+                fig16.show()
+
+            def open_Chris():
+                fig17.show()
+
+            def create_button(win, command, text, x, y):
+                button = ctk.CTkButton(win, command=command, text=text, width=75)
+                button.place(x=x, y=y)
+
+            create_button(win, open_Finn, "Finn", 50, 100)
+            create_button(win, open_Andrew, "Andrew", 250, 100)
+            create_button(win, open_Noah, "Noah", 350, 100)
+            create_button(win, open_Lucca, "Lucca", 450, 100)
+            create_button(win, open_Talon, "Talon", 550, 100)
+            create_button(win, open_Will, "Will", 50, 300)
+            create_button(win, open_Lucas, "Lucas", 50, 200)
+            create_button(win, open_Daniel, "Daniel", 150, 200)
+            create_button(win, open_Zac, "Zac", 250, 200)
+            create_button(win, open_Bowie, "Bowie", 350, 200)
+            create_button(win, open_Henri, "Henri", 450, 200)
+            create_button(win, open_Fraser, "Fraser", 550, 200)
+            create_button(win, open_Jacko, "Jacko", 150, 300)
+            create_button(win, open_Tom, "Tom", 250, 300)
+            create_button(win, open_Kohi, "Khoi", 350, 300)
+            create_button(win, open_Leo, "Leo", 450, 300)
+            create_button(win, open_Riley, "Riley", 550, 300)
+            create_button(win, open_Chris, "CJ", 150, 100)
+
+            exit_b = ctk.CTkButton(win, command=win.destroy, text="Exit", width=75,fg_color='red')
+            exit_b.place(x=300, y=400)
+
+            win.mainloop()
+    entry.bind('<Return>',display_code)
 
     # Titles the league, team and player cards
     league_text = ctk.CTkLabel(master=app,text='League Ladder',font=('Gill Sans MT', 22))
@@ -178,12 +300,12 @@ def create_home():
     }
 
     team_mapping = {
-        'Arsenal.png': 'ENG-Premier League',
-        'AS Monaco.png': 'FRA-Ligue 1',
-        'Bayer 04 Leverkusen.png': 'GER-Bundesliga',
-        'FC Bayern Munchen.png': 'GER-Bundesliga',
-        'Manchester City.png': 'ENG-Premier League',
-        'PSG.png': 'FRA-Ligue 1'
+    'Arsenal.png': 'ENG-Premier League',
+    'AS Monaco.png': 'FRA-Ligue 1',
+    'Bayer 04 Leverkusen.png': 'GER-Bundesliga',
+    'FC Bayern Munchen.png': 'GER-Bundesliga',
+    'Manchester City.png': 'ENG-Premier League',
+    'PSG.png': 'FRA-Ligue 1'
 }
     
     # Opens the pictures, resizes them and displays them in the home screen
@@ -558,7 +680,7 @@ def load_data_table(tree, league, season, search_term_table=''):
 
         # Add new headings
         for column in df.columns:
-            tree.heading(column, text=column)
+            tree.heading(column, text=column, command=lambda _col=column: treeview_sort_column(tree, _col, False))
         
         # Add new data to the treeview
         for index, row in df.iterrows():
@@ -618,12 +740,6 @@ def create_league_tables(league='ENG-Premier League', season='2023-2024'):
     load_data_table(tree, league, season)
 
     tl4.mainloop()
-
-def create_rankings():
-    tl5 = ctk.CTk()
-    tl5.geometry("900x700")
-    tl5.title("Rankings")
-    tl5.resizable(False, False)
 
 # Code used to create the about page
 def create_about():

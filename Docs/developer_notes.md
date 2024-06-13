@@ -13,16 +13,22 @@
 
     Edit: I have realised that .resize does not work across devices because the size of the pictures depended on the systems scale so I have decided that the pictures will be on 100% scale and when someone download's my app I will get them, through the installation guide, to check their display scale and if it is not 100% I will get them to change it. It is between that or I make different gui files depending on different display scales.
 
+2. I found a very useful libiary called soccerdata (sd) which I used to get all of the stats into my folder and then I found a widget in tkinter called ttk.Treeview which I used to create all the respective tables and change them when the option menus are changed.
+
+3. In soccerdata I can pull data from FutMob which has a read_league_table for the leagues I want to display so I used that to pull the data and display it in my applicaton.
+
 ## To Dos
 * Find a better way to import massive amounts of data only once so that there isn't a massive wait time everytime the app opens as it is loading in all the data every time when there is already data there. *Completed
 
-* Import and display all the data under their respective headings in a nice format.
+* Import and display all the data under their respective headings in a nice format. *Completed
 
 * Get the search bar working and displaying kewwords and stats based on string queries.
 
-* Get buttons under the pictures so that users can click on the pictures and they display the stats based upon the league, team or player.
+* Get buttons under the pictures so that users can click on the pictures and they display the stats based upon the league, team or player. *Completed
 
 * Make a terms and services that pops up once and never again once someone has read it and agreed to it. *Completed
+
+* I need to add tooltips to each dataset's headings so user know what each thing means.
 
 ## Completed To Dos
 * Finished the Gui and all the pictures that are displayed in the gui and fixed a problem with the display of the pictures.
@@ -32,3 +38,6 @@
 * I am going to import all the data I need into a folder called 'data' and add it to my respository so the data is always there when I need to access it in my gui.
 
 * Terms and Service window now works and pops up when you first start the application and doesn't pop up again once you agree to it.
+
+* I used the .bind feature to make it so when button 1 is clicked over one of the pictures it opens up the stats for that respective picture.
+
