@@ -16,7 +16,7 @@ Prerequisites
 * Install the required dependencies listed in requirements.txt.
 
 ### Installation Steps
-Clone the Repository:
+### Clone the Repository:
 
 ![](documentation_images/doc3.PNG)
 ![](documentation_images/doc4.PNG)
@@ -28,10 +28,14 @@ Or clone via git bash:
 git clone https://github.com/LucasA06/Lucas-Ableson-Major.git
 ```
 
+### Install pip libaries:
+
 To install requirements.txt:
 ```bash
 py -m pip install -r requirements.txt
 ```
+
+![](documentation_images\doc10.PNG)
 
 ### Important Note:
 To ensure the application displays correctly, set your computer's display scale to 100%. On Windows, you can do this by navigating to Settings > System > Display and adjusting the scale and layout settings to 100%.
@@ -39,13 +43,8 @@ To ensure the application displays correctly, set your computer's display scale 
 ![](documentation_images/doc1.PNG)
 ![](documentation_images/doc2.PNG)
 
-Install Dependencies:
 
-```bash
-pip install -r requirements.txt
-```
-
-Run the Application:
+### Run the Application:
 
 ![](documentation_images/doc7.PNG)
 
