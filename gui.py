@@ -192,7 +192,7 @@ def create_home():
     button3.place(relx=0.75, rely=0.1)
     entry = ctk.CTkEntry(master=app, placeholder_text='Search', width=525, font=('Gill Sans MT', 15))
     entry.place(relx=0.2, rely=0.025)
-    entry.bind('<Return>', lambda event: display_search_results(search_data(entry.get())))
+
 
     def display_code(event=None):
         if entry.get().lower() == 'Eggy':
@@ -319,7 +319,7 @@ def create_home():
             exit_b.place(x=300, y=400)
 
             win.mainloop()
-    entry.bind('<Return>',display_code)
+    entry.bind('<Return>', lambda event:display_search_results(search_data(entry.get())))
 
     # Titles the league, team and player cards
     league_text = ctk.CTkLabel(master=app,text='League Ladder',font=('Gill Sans MT', 22))
