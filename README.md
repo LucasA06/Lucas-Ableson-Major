@@ -18,6 +18,12 @@ Prerequisites
 ### Installation Steps
 Clone the Repository:
 
+![](documentation_images/doc3.png)
+![](documentation_images/doc4.png)
+![](documentation_images/doc5.png)
+![](documentation_images/doc6.png)
+
+Or clone via git bash:
 ```bash
 git clone https://github.com/LucasA06/Lucas-Ableson-Major.git
 ```
@@ -27,23 +33,17 @@ Install Dependencies:
 ```bash
 pip install -r requirements.txt
 ```
-Setup the Database:
 
-Ensure your database server is running.
-Update the database configuration in config.py with your database credentials.
-Run the database migration script to set up the necessary tables.
-```bash
-python manage.py migrate
-```
 Run the Application:
 
-bash
-Copy code
-python manage.py runserver
-### Important Note:
-To ensure the application displays correctly, set your computer's display scale to 100%. On Windows, you can do this by navigating to Settings > System > Display and adjusting the scale and layout settings to 100%. On macOS, go to System Preferences > Displays and select Default for display.
 
-## How to Use the Project
+### Important Note:
+To ensure the application displays correctly, set your computer's display scale to 100%. On Windows, you can do this by navigating to Settings > System > Display and adjusting the scale and layout settings to 100%. On macOS, go to System Preferences > Displays and select 100% for display.
+
+![](documentation_images/doc1.png)
+![](documentation_images/doc2.png)
+
+## How to Use
 Accessing the App:
 
 1. Open your web browser.
