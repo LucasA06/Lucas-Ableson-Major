@@ -28,6 +28,17 @@ Or clone via git bash:
 git clone https://github.com/LucasA06/Lucas-Ableson-Major.git
 ```
 
+To install requirements.txt:
+```bash
+py -m pip install -r requirements.txt
+```
+
+### Important Note:
+To ensure the application displays correctly, set your computer's display scale to 100%. On Windows, you can do this by navigating to Settings > System > Display and adjusting the scale and layout settings to 100%.
+
+![](documentation_images/doc1.PNG)
+![](documentation_images/doc2.PNG)
+
 Install Dependencies:
 
 ```bash
@@ -36,31 +47,27 @@ pip install -r requirements.txt
 
 Run the Application:
 
+![](documentation_images/doc7.PNG)
 
-### Important Note:
-To ensure the application displays correctly, set your computer's display scale to 100%. On Windows, you can do this by navigating to Settings > System > Display and adjusting the scale and layout settings to 100%. On macOS, go to System Preferences > Displays and select 100% for display.
-
-![](documentation_images/doc1.PNG)
-![](documentation_images/doc2.PNG)
 
 ## How to Use
 Accessing the App:
 
-1. Open your web browser.
-Navigate to http://127.0.0.1:8000 to access the Football Database App interface.
-Navigating the Interface:
+- Home Page: Provides an overview of the latest matches and updates.
+- Teams: Browse through a list of football teams, view team details, and standings.
+- Players: Search for players, view player statistics, and performance metrics.
+- Matches: Explore match schedules, results, and detailed match reports.
+- League Table: Access comprehensive statistics and analytics for the certain leagues and seasons.
+- About: Read about the app and the creators of the app.
+- Settings: Change selected settings to personal preferences.
 
-2. Home Page: Provides an overview of the latest matches and updates.
-Teams: Browse through a list of football teams, view team details, and standings.
-Players: Search for players, view player statistics, and performance metrics.
-Matches: Explore match schedules, results, and detailed match reports.
-Statistics: Access comprehensive statistics and analytics for teams and players.
-Querying the Database:
+  ![](documentation_images/doc8.PNG)
 
-3. Use the search bar and filters to query the database for specific information.
-Generate custom reports and visualizations based on the data available.
-User Settings:
+### Querying the Database:
 
-4. Customize your profile and preferences through the user settings page.
-Manage notifications and alerts for your favorite teams and players.
-The Football Database App is designed to be intuitive and user-friendly, making it easy for anyone to delve into the rich world of football data. Enjoy exploring and analyzing the beautiful game with our app!
+- Use the search bar and filters to query the database for specific information.
+
+- Generate custom reports and visualizations based on the data available.
+
+    ![](documentation_images/doc9.PNG)
+
