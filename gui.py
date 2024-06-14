@@ -158,14 +158,14 @@ def display_search_results(results):
         for index, row in df.iterrows():
             tree.insert("", "end", values=tuple(row))
 
-    menu_button = ctk.CTkButton(master=tl, text='Menu', width=100, command=lambda: main_menu(tl), font=('Gill Sans MT', 15))
+    menu_button = ctk.CTkButton(tl, text='Menu', width=100, command=lambda: main_menu(tl), font=('Gill Sans MT', 15))
     menu_button.place(relx=0.5, rely=0.95, anchor='center')
 
     tl.mainloop()
 
 def create_home():
     '''Creates the home GUI page with buttons, search functionality, and displays random images of leagues, players, and teams.'''
-    sidebar = ctk.CTkFrame(master=app, width=1, height=700, corner_radius=0)
+    sidebar = ctk.CTkFrame(app, width=1, height=700, corner_radius=0)
     sidebar.grid()
     sidebar_button1 = ctk.CTkButton(sidebar, width=100, text='Matches', command=open_matches, font=('Gill Sans MT', 15))
     sidebar_button1.grid(row=1, column=0, padx=5, pady=5)
@@ -184,13 +184,13 @@ def create_home():
     exit_button = ctk.CTkButton(sidebar, width=100, text='Exit', command=app.withdraw, fg_color='red', font=('Gill Sans MT', 15))
     exit_button.grid(row=9, column=0, padx=5, pady=5)
 
-    button1 = ctk.CTkButton(master=app, text="League Tables", command=open_league_tables, font=('Gill Sans MT', 15))
+    button1 = ctk.CTkButton(app, text="League Tables", command=open_league_tables, font=('Gill Sans MT', 15))
     button1.place(relx=0.2, rely=0.1)
-    button2 = ctk.CTkButton(master=app, text='Players', command=open_players, font=('Gill Sans MT', 15))
+    button2 = ctk.CTkButton(app, text='Players', command=open_players, font=('Gill Sans MT', 15))
     button2.place(relx=0.475, rely=0.1)
-    button3 = ctk.CTkButton(master=app, text='Teams', command=open_teams, font=('Gill Sans MT', 15))
+    button3 = ctk.CTkButton(app, text='Teams', command=open_teams, font=('Gill Sans MT', 15))
     button3.place(relx=0.75, rely=0.1)
-    entry = ctk.CTkEntry(master=app, placeholder_text='Search', width=525, font=('Gill Sans MT', 15))
+    entry = ctk.CTkEntry(app, placeholder_text='Search', width=525, font=('Gill Sans MT', 15))
     entry.place(relx=0.2, rely=0.025)
 
 
@@ -322,11 +322,11 @@ def create_home():
     entry.bind('<Return>', lambda event:display_search_results(search_data(entry.get())))
 
     # Titles the league, team and player cards
-    league_text = ctk.CTkLabel(master=app,text='League Ladder',font=('Gill Sans MT', 22))
+    league_text = ctk.CTkLabel(app,text='League Ladder',font=('Gill Sans MT', 22))
     league_text.place(relx=0.375,rely=0.21, anchor='w')
-    player_text = ctk.CTkLabel(master=app,text='Player Card',font=('Gill Sans MT', 22))
+    player_text = ctk.CTkLabel(app,text='Player Card',font=('Gill Sans MT', 22))
     player_text.place(x=175,rely=0.59)
-    team_text = ctk.CTkLabel(master=app,text='Team Card',font=('Gill Sans MT', 22))
+    team_text = ctk.CTkLabel(app,text='Team Card',font=('Gill Sans MT', 22))
     team_text.place(x=450,rely=0.59)
 
     # Set the width and height of the home screen pictures
@@ -413,6 +413,22 @@ def create_home():
 
 create_home()
 
+def create_tooltip(event, text):
+    x, y, _, _ = event.widget.bbox("insert")
+    x += event.widget.winfo_rootx() + 25
+    y += event.widget.winfo_rooty() + 25
+    tooltip = tk.Toplevel(event.widget)
+    tooltip.wm_overrideredirect(True)
+    tooltip.wm_geometry(f"+{x}+{y}")
+    label = tk.Label(tooltip, text=text, background="white", relief="solid", borderwidth=1, padx=5, pady=2)
+    label.pack()
+    event.widget.tooltip = tooltip
+
+def hide_tooltip(event):
+    if hasattr(event.widget, 'tooltip'):
+        event.widget.tooltip.destroy()
+        event.widget.tooltip = None
+
 def treeview_sort_column(tree, col, reverse):
     """
     Sorts a treeview column when the column header is clicked.
@@ -448,45 +464,33 @@ def treeview_sort_column(tree, col, reverse):
     tree.heading(col, command=lambda _col=col: treeview_sort_column(tree, _col, not reverse))
 
 def load_data_teams(tree, league, season, stat_type, search_term_team=''):
-    """
-    Loads team data from a pickle file into the treeview.
-
-    Parameters:
-        tree (ttk.Treeview): The treeview widget.
-        league (str): The league to load data for.
-        season (str): The season to load data for.
-        stat_type (str): The type of statistics to load.
-        search_term_team (str): The term to filter the data.
-    """
     file_path = f'data/Team/{league}/{season}/{stat_type}.pkl'
-    
-    # Clear the existing data in the treeview
     tree.delete(*tree.get_children())
     
     try:
-        # Load data from the pickle file
         df = pd.read_pickle(file_path)
         
-        # Filter the dataframe if a search term is provided
         if search_term_team:
             df = df[df.apply(lambda row: row.astype(str).str.contains(search_term_team, case=False).any(), axis=1)]
 
-        # Set new columns for the treeview
         tree["columns"] = df.columns.tolist()
         
-        # Remove existing headings
         for column in tree["columns"]:
-            tree.heading(column, text="")
-
-        # Add new headings with sorting functionality
-        for column in df.columns:
             tree.heading(column, text=column, command=lambda _col=column: treeview_sort_column(tree, _col, False))
+            heading = tree.heading(column)
+            heading_id = f"#{heading['id']}"
+            tree.heading(heading_id, command=lambda _col=column: treeview_sort_column(tree, _col, False))
+            tree.heading(heading_id, text=column)
+            tree.heading(heading_id, command=lambda _col=column: treeview_sort_column(tree, _col, False))
+            heading_label = tree.column(heading_id)
+            heading_label['heading_label'].bind("<Enter>", lambda event, text=column: create_tooltip(event, text))
+            heading_label['heading_label'].bind("<Leave>", hide_tooltip)
         
-        # Add new data to the treeview
         for index, row in df.iterrows():
             tree.insert("", "end", values=tuple(row))
     except FileNotFoundError:
         print(f"File not found: {file_path}")
+
 
 def on_option_change_team(tree, league_option_menu_team, season_option_menu_team, stat_type_option_menu_team, search_entry_team):
     """
@@ -573,7 +577,7 @@ def create_teams(league='ENG-Premier League', team_name=''):
     season_option_menu_team.configure(command=lambda _: on_option_change_team(tree, league_option_menu_team, season_option_menu_team, stat_type_option_menu_team, search_entry_team))
     stat_type_option_menu_team.configure(command=lambda _: on_option_change_team(tree, league_option_menu_team, season_option_menu_team, stat_type_option_menu_team, search_entry_team))
 
-    menu_button = ctk.CTkButton(master=tl3, text='Menu', width=100, command=lambda: main_menu(tl3), font=('Gill Sans MT', 15))
+    menu_button = ctk.CTkButton(tl3, text='Menu', width=100, command=lambda: main_menu(tl3), font=('Gill Sans MT', 15))
     menu_button.place(relx=0.5, rely=0.95, anchor='center')
 
     load_data_teams(tree, league, '23-24', 'Standard')
@@ -706,7 +710,7 @@ def create_players(league='ENG-Premier League', player_name=''):
     season_option_menu_players.configure(command=lambda _: on_option_change_players(tree, league_option_menu_players, season_option_menu_players, stat_type_option_menu_players, search_entry_players))
     stat_type_option_menu_players.configure(command=lambda _: on_option_change_players(tree, league_option_menu_players, season_option_menu_players, stat_type_option_menu_players, search_entry_players))
 
-    menu_button = ctk.CTkButton(master=tl1, text='Menu', width=100, command=lambda: main_menu(tl1), font=('Gill Sans MT', 15))
+    menu_button = ctk.CTkButton(tl1, text='Menu', width=100, command=lambda: main_menu(tl1), font=('Gill Sans MT', 15))
     menu_button.place(relx=0.5, rely=0.95, anchor='center')
 
     load_data_players(tree, league, '23-24', 'Standard')
@@ -872,7 +876,7 @@ def create_matches():
     league_option_menu_matches.configure(command=lambda _: on_option_change_matches(tree_matches, league_option_menu_matches, season_option_menu_matches, search_entry_matches, home_entry_matches, away_entry_matches))
     season_option_menu_matches.configure(command=lambda _: on_option_change_matches(tree_matches, league_option_menu_matches, season_option_menu_matches, search_entry_matches, home_entry_matches, away_entry_matches))
 
-    menu_button = ctk.CTkButton(master=tl4, text='Menu', width=100, command=lambda: main_menu(tl4), font=('Gill Sans MT', 15))
+    menu_button = ctk.CTkButton(tl4, text='Menu', width=100, command=lambda: main_menu(tl4), font=('Gill Sans MT', 15))
     menu_button.place(relx=0.5, rely=0.95, anchor='center')
 
     load_data_matches(tree_matches, 'ENG-Premier League', '2023-2024')
@@ -991,7 +995,7 @@ def create_league_tables(league='ENG-Premier League', season='2023-2024'):
     league_option_menu_table.configure(command=lambda _: on_option_change_table(tree, league_option_menu_table, season_option_menu_table, search_entry_table))
     season_option_menu_table.configure(command=lambda _: on_option_change_table(tree, league_option_menu_table, season_option_menu_table, search_entry_table))
 
-    menu_button = ctk.CTkButton(master=tl4, text='Menu', width=100, command=lambda: main_menu(tl4), font=('Gill Sans MT', 15))
+    menu_button = ctk.CTkButton(tl4, text='Menu', width=100, command=lambda: main_menu(tl4), font=('Gill Sans MT', 15))
     menu_button.place(relx=0.5, rely=0.95, anchor='center')
 
     load_data_table(tree, league, season)
@@ -1007,41 +1011,43 @@ def create_about():
     tl6.title("About")
     tl6.resizable(False, False)
 
-    label = ctk.CTkLabel(master=tl6, text='About', font=('Gill Sans MT', 30))
+    label = ctk.CTkLabel(tl6, text='About', font=('Gill Sans MT', 30))
     label.place(relx=0.425, rely=0.01)
 
     # Display the content of about.txt in a textbox
-    textbox = ctk.CTkTextbox(master=tl6, width=485, height=450, font=('Gill Sans MT', 15))
+    textbox = ctk.CTkTextbox(tl6, width=485, height=450, font=('Gill Sans MT', 15))
     textbox.place(relx=0.025, rely=0.1)
     with open(r'about.txt') as file:
         data = file.read()
     textbox.insert('1.0', data)
     textbox.configure(state='disabled')
 
-    menu_button = ctk.CTkButton(master=tl6, text='Menu', height=50, width=200, command=lambda: main_menu(tl6), font=('Gill Sans MT', 15))
+    menu_button = ctk.CTkButton(tl6, text='Menu', height=50, width=200, command=lambda: main_menu(tl6), font=('Gill Sans MT', 15))
     menu_button.place(relx=0.5, rely=0.9, anchor='center')
     tl6.mainloop()
 
 def create_settings():
     """
-    Creates the Settings page allowing users to change the appearance mode.
+    Creates the Settings page allowing users to change the appearance mode  and font.
     """
     tl7 = ctk.CTk()
     tl7.geometry("500x600")
     tl7.title("Settings")
     tl7.resizable(False, False)
 
-    settings_label = ctk.CTkLabel(master=tl7, text='Settings', font=('Gill Sans MT', 30))
+    settings_label = ctk.CTkLabel(tl7, text='Settings', font=('Gill Sans MT', 30))
     settings_label.place(relx=0.5, rely=0.05, anchor='center')
-    apperance_label = ctk.CTkLabel(master=tl7, text='Appearance', font=('Gill Sans MT', 20))
+    apperance_label = ctk.CTkLabel(tl7, text='Appearance', font=('Gill Sans MT', 20))
     apperance_label.place(relx=0.5, rely=0.2, anchor='center')
+    font_label = ctk.CTkLabel(tl7, text='Font', font=('Gill Sans MT', 20))
+    font_label.place(relx=0.5, rely=0.4, anchor='center')
 
     # Option menu to change the appearance to light, dark, or system colors
-    appearance_menu = ctk.CTkOptionMenu(master=tl7, values=['Light', 'Dark', 'System'], font=('Gill Sans MT', 15), command=lambda mode: appearance_change(mode))
-    appearance_menu.place(relx=0.5, rely=0.3, anchor='center')
+    appearance_menu = ctk.CTkOptionMenu(tl7, values=['Light', 'Dark', 'System'], font=('Gill Sans MT', 15), command=lambda mode: appearance_change(mode))
+    appearance_menu.place(relx=0.5, rely=0.275, anchor='center')
     appearance_menu.set(current_theme)
 
-    menu_button = ctk.CTkButton(master=tl7, text='Menu', height=50, width=200, command=lambda: main_menu(tl7), font=('Gill Sans MT', 15))
+    menu_button = ctk.CTkButton(tl7, text='Menu', height=50, width=200, command=lambda: main_menu(tl7), font=('Gill Sans MT', 15))
     menu_button.place(relx=0.5, rely=0.9, anchor='center')
 
     tl7.mainloop()

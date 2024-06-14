@@ -7,6 +7,23 @@
 
 3. Some statistics are very hard to find and export when relating to that stats that I would like to display. i.e. the league tables are very hard to find in a pandas dataframe or any type of dataframe.
 
+4. Whenever the application is first started an error pops up which reads ```UserWarning: CTkLabel Warning: Given image is not CTkImage but <class 'PIL.ImageTk.PhotoImage'>. Image can not be scaled on HighDPI displays, use CTkImage instead. warnings.warn(f"{type(self).__name__} Warning: Given image is not CTkImage but {type(image)}. Image can not be scaled on HighDPI displays, use CTkImage instead.\n")``` and also when the terms and conditons window is accecpted an error pops up which reads ```invalid command name "2103330467072<lambda>"
+    while executing
+"2103330467072<lambda>"
+    ("after" script)
+invalid command name "2103330467712update"
+    while executing
+"2103330467712update"
+    ("after" script)
+invalid command name "2103330468032check_dpi_scaling"
+    while executing
+"2103330468032check_dpi_scaling"
+    ("after" script)
+invalid command name "2103330467648_click_animation"
+    while executing
+"2103330467648_click_animation"
+    ("after" script)```.
+
 ## Solutions
 
 1. I have used the .resize feature of PhotoImage to make it relative to the size of different computers and monitors. The pictures are saved as part of the github repository and are pulled from it into the main gui home page of my gui. I also used app.minsize and app.maxsize to make sure that the main window's size cannot be changed no matter how big or small someones monitor is.
@@ -16,6 +33,8 @@
 2. I found a very useful libiary called soccerdata (sd) which I used to get all of the stats into my folder and then I found a widget in tkinter called ttk.Treeview which I used to create all the respective tables and change them when the option menus are changed.
 
 3. In soccerdata I can pull data from FutMob which has a read_league_table for the leagues I want to display so I used that to pull the data and display it in my applicaton.
+
+4. I have realised that the errors do not impact my code or have any effect on the user experience and are basically suggestions so I am just going to leave them as is because they do not affect anything.
 
 ## To Dos
 * Find a better way to import massive amounts of data only once so that there isn't a massive wait time everytime the app opens as it is loading in all the data every time when there is already data there. *Completed
