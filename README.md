@@ -35,7 +35,7 @@ To install requirements.txt:
 py -m pip install -r requirements.txt
 ```
 
-![](documentation_images\doc10.PNG)
+![](documentation_images/doc10.PNG)
 
 ### Important Note:
 To ensure the application displays correctly, set your computer's display scale to 100%. On Windows, you can do this by navigating to Settings > System > Display and adjusting the scale and layout settings to 100%.
