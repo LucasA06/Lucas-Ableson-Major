@@ -413,22 +413,6 @@ def create_home():
 
 create_home()
 
-def create_tooltip(event, text):
-    x, y, _, _ = event.widget.bbox("insert")
-    x += event.widget.winfo_rootx() + 25
-    y += event.widget.winfo_rooty() + 25
-    tooltip = tk.Toplevel(event.widget)
-    tooltip.wm_overrideredirect(True)
-    tooltip.wm_geometry(f"+{x}+{y}")
-    label = tk.Label(tooltip, text=text, background="white", relief="solid", borderwidth=1, padx=5, pady=2)
-    label.pack()
-    event.widget.tooltip = tooltip
-
-def hide_tooltip(event):
-    if hasattr(event.widget, 'tooltip'):
-        event.widget.tooltip.destroy()
-        event.widget.tooltip = None
-
 def treeview_sort_column(tree, col, reverse):
     """
     Sorts a treeview column when the column header is clicked.
@@ -477,20 +461,11 @@ def load_data_teams(tree, league, season, stat_type, search_term_team=''):
         
         for column in tree["columns"]:
             tree.heading(column, text=column, command=lambda _col=column: treeview_sort_column(tree, _col, False))
-            heading = tree.heading(column)
-            heading_id = f"#{heading['id']}"
-            tree.heading(heading_id, command=lambda _col=column: treeview_sort_column(tree, _col, False))
-            tree.heading(heading_id, text=column)
-            tree.heading(heading_id, command=lambda _col=column: treeview_sort_column(tree, _col, False))
-            heading_label = tree.column(heading_id)
-            heading_label['heading_label'].bind("<Enter>", lambda event, text=column: create_tooltip(event, text))
-            heading_label['heading_label'].bind("<Leave>", hide_tooltip)
         
         for index, row in df.iterrows():
             tree.insert("", "end", values=tuple(row))
     except FileNotFoundError:
         print(f"File not found: {file_path}")
-
 
 def on_option_change_team(tree, league_option_menu_team, season_option_menu_team, stat_type_option_menu_team, search_entry_team):
     """
@@ -1039,8 +1014,6 @@ def create_settings():
     settings_label.place(relx=0.5, rely=0.05, anchor='center')
     apperance_label = ctk.CTkLabel(tl7, text='Appearance', font=('Gill Sans MT', 20))
     apperance_label.place(relx=0.5, rely=0.2, anchor='center')
-    font_label = ctk.CTkLabel(tl7, text='Font', font=('Gill Sans MT', 20))
-    font_label.place(relx=0.5, rely=0.4, anchor='center')
 
     # Option menu to change the appearance to light, dark, or system colors
     appearance_menu = ctk.CTkOptionMenu(tl7, values=['Light', 'Dark', 'System'], font=('Gill Sans MT', 15), command=lambda mode: appearance_change(mode))

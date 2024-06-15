@@ -47,8 +47,6 @@ invalid command name "2103330467648_click_animation"
 
 * Make a terms and services that pops up once and never again once someone has read it and agreed to it. *Completed
 
-* I need to add tooltips to each dataset's headings so user know what each thing means.
-
 ## Completed To Dos
 * Finished the Gui and all the pictures that are displayed in the gui and fixed a problem with the display of the pictures.
 
@@ -59,4 +57,3 @@ invalid command name "2103330467648_click_animation"
 * Terms and Service window now works and pops up when you first start the application and doesn't pop up again once you agree to it.
 
 * I used the .bind feature to make it so when button 1 is clicked over one of the pictures it opens up the stats for that respective picture.
-
