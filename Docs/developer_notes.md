@@ -30,7 +30,7 @@ invalid command name "2103330467648_click_animation"
 
     Edit: I have realised that .resize does not work across devices because the size of the pictures depended on the systems scale so I have decided that the pictures will be on 100% scale and when someone download's my app I will get them, through the installation guide, to check their display scale and if it is not 100% I will get them to change it. It is between that or I make different gui files depending on different display scales.
 
-2. I found a very useful libary called soccerdata (sd) which I used to get all of the stats into my folder and then I found a widget in tkinter called ttk.Treeview which I used to create all the respective tables and change them when the option menus are changed.
+2. I found a very useful library called soccerdata (sd) which I used to get all of the stats into my folder and then I found a widget in tkinter called ttk.Treeview which I used to create all the respective tables and change them when the option menus are changed.
 
 3. In soccerdata I can pull data from FutMob which has a read_league_table for the leagues I want to display so I used that to pull the data and display it in my applicaton.
 
